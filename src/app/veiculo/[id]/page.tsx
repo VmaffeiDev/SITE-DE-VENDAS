@@ -2,8 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
+  BadgeCheck,
+  Banknote,
   CalendarDays,
+  Camera,
   CheckCircle2,
+  FileCheck2,
   Fuel,
   Gauge,
   MessageCircle,
@@ -57,6 +61,8 @@ export default async function VehiclePage({ params }: PageProps) {
 
   const mainImage = vehicle.images[0];
   const interestMessage = `Olá, tenho interesse no veículo ${vehicle.title} (${vehicle.id}).`;
+  const testDriveMessage = `Olá, quero agendar um test drive do veículo ${vehicle.title}.`;
+  const financeMessage = `Olá, quero simular financiamento do veículo ${vehicle.title}.`;
 
   const specs = [
     { label: "Ano", value: formatYear(vehicle.year), icon: CalendarDays },
@@ -67,20 +73,61 @@ export default async function VehiclePage({ params }: PageProps) {
     { label: "Cor", value: formatLabel(vehicle.color), icon: Palette }
   ];
 
+  const trustItems = [
+    { label: "Fotos reais", value: `${vehicle.images.length || 1} imagem(ns)`, icon: Camera },
+    { label: "Atendimento direto", value: "WhatsApp da loja", icon: MessageCircle },
+    { label: "Compra orientada", value: "Documentação e entrega", icon: FileCheck2 }
+  ];
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Vehicle",
+    name: vehicle.title,
+    brand: vehicle.brand,
+    model: vehicle.model,
+    vehicleModelDate: vehicle.year,
+    mileageFromOdometer: vehicle.mileage
+      ? {
+          "@type": "QuantitativeValue",
+          value: vehicle.mileage,
+          unitCode: "KMT"
+        }
+      : undefined,
+    color: vehicle.color || undefined,
+    fuelType: vehicle.fuel || undefined,
+    image: vehicle.images,
+    description:
+      vehicle.description ||
+      `${vehicle.title} disponível na VMAFFEI Motors.`,
+    offers: vehicle.price
+      ? {
+          "@type": "Offer",
+          price: vehicle.price,
+          priceCurrency: "BRL",
+          availability: "https://schema.org/InStock"
+        }
+      : undefined
+  };
+
   return (
-    <section className="bg-mist py-8 sm:py-12">
+    <section className="bg-mist pb-24 pt-8 sm:pb-12 sm:pt-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
-            <div className="relative aspect-[16/10] overflow-hidden rounded border border-line bg-white shadow-sm">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-line bg-white shadow-sm">
               {mainImage ? (
                 <Image
                   src={mainImage}
                   alt={vehicle.title}
                   fill
                   priority
+                  unoptimized
                   sizes="(min-width: 1024px) 58vw, 100vw"
-                  className="object-cover"
+                  className="object-contain"
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-graphite">
@@ -100,7 +147,8 @@ export default async function VehiclePage({ params }: PageProps) {
                       src={image}
                       alt={`${vehicle.title} foto ${index + 2}`}
                       fill
-                      sizes="20vw"
+                      quality={92}
+                      sizes="(min-width: 1024px) 120px, 20vw"
                       className="object-cover"
                     />
                   </div>
@@ -109,7 +157,7 @@ export default async function VehiclePage({ params }: PageProps) {
             ) : null}
           </div>
 
-          <aside className="h-fit rounded border border-line bg-white p-5 shadow-sm lg:p-7">
+          <aside className="h-fit rounded-lg border border-line bg-white p-5 shadow-sm lg:sticky lg:top-28 lg:p-7">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-graphite">
               Veículo à venda
             </p>
@@ -118,6 +166,9 @@ export default async function VehiclePage({ params }: PageProps) {
             </h1>
             <p className="mt-3 text-3xl font-black text-ink">
               {formatCurrency(vehicle.price)}
+            </p>
+            <p className="mt-2 text-sm font-semibold text-graphite">
+              Código do anúncio: {vehicle.id}
             </p>
 
             <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -145,14 +196,21 @@ export default async function VehiclePage({ params }: PageProps) {
                 Tenho interesse
               </a>
               <a
-                href={getWhatsAppLink(
-                  `Olá, quero agendar um test drive do veículo ${vehicle.title}.`
-                )}
+                href={getWhatsAppLink(testDriveMessage)}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center gap-2 rounded border border-ink px-5 py-3 text-sm font-black text-ink transition hover:bg-mist"
               >
                 Agendar test drive
+              </a>
+              <a
+                href={getWhatsAppLink(financeMessage)}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded border border-line bg-mist px-5 py-3 text-sm font-black text-ink transition hover:bg-white"
+              >
+                <Banknote size={18} />
+                Simular financiamento
               </a>
               <a
                 href={getWhatsAppLink(interestMessage)}
@@ -163,6 +221,23 @@ export default async function VehiclePage({ params }: PageProps) {
                 <MessageCircle size={18} />
                 Falar no WhatsApp
               </a>
+            </div>
+
+            <div className="mt-7 grid gap-3 border-t border-line pt-5">
+              {trustItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div key={item.label} className="flex items-center gap-3 text-sm">
+                    <span className="flex h-9 w-9 items-center justify-center rounded bg-mist text-ink">
+                      <Icon size={17} />
+                    </span>
+                    <span>
+                      <span className="block font-black text-ink">{item.label}</span>
+                      <span className="text-graphite">{item.value}</span>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </aside>
         </div>
@@ -194,6 +269,45 @@ export default async function VehiclePage({ params }: PageProps) {
             )}
           </section>
         </div>
+
+        <section className="mt-8 rounded-lg border border-line bg-white p-6 shadow-sm">
+          <div className="grid gap-5 md:grid-cols-[1fr_auto] md:items-center">
+            <div>
+              <p className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-graphite">
+                <BadgeCheck size={16} />
+                Próximo passo
+              </p>
+              <h2 className="mt-2 text-2xl font-black text-ink">
+                Gostou desse veículo?
+              </h2>
+              <p className="mt-2 max-w-2xl leading-7 text-graphite">
+                Fale com a equipe para confirmar disponibilidade, condições de
+                negociação, troca e financiamento.
+              </p>
+            </div>
+            <a
+              href={getWhatsAppLink(interestMessage)}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded bg-whatsapp px-6 py-4 text-sm font-black text-white transition hover:brightness-95"
+            >
+              <MessageCircle size={18} />
+              Chamar no WhatsApp
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 p-3 shadow-premium backdrop-blur sm:hidden">
+        <a
+          href={getWhatsAppLink(interestMessage)}
+          target="_blank"
+          rel="noreferrer"
+          className="flex h-12 items-center justify-center gap-2 rounded bg-whatsapp text-sm font-black text-white"
+        >
+          <MessageCircle size={18} />
+          Tenho interesse
+        </a>
       </div>
     </section>
   );

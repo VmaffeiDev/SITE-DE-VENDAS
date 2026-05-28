@@ -1,10 +1,14 @@
+import type { Metadata } from "next";
 import {
   BadgeCheck,
   Camera,
+  CarFront,
   CheckCircle2,
+  ClipboardCheck,
   FileText,
   Handshake,
   MessageCircle,
+  Megaphone,
   ShieldCheck
 } from "lucide-react";
 
@@ -14,6 +18,12 @@ type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
+export const metadata: Metadata = {
+  title: "Consignar veículo | VMAFFEI Motors",
+  description:
+    "Venda seu carro em consignação com a VMAFFEI Motors. Avaliação, divulgação, atendimento aos interessados e suporte até a transferência."
+};
+
 const benefits = [
   "Avaliação profissional do veículo",
   "Divulgação no site e redes sociais",
@@ -21,6 +31,29 @@ const benefits = [
   "Intermediação segura",
   "Mais visibilidade para vender mais rápido",
   "Suporte completo até a transferência"
+];
+
+const steps = [
+  {
+    title: "Envie os dados",
+    description: "Preencha as informações e anexe fotos reais do veículo.",
+    icon: ClipboardCheck
+  },
+  {
+    title: "Avaliação da loja",
+    description: "A equipe analisa condição, mercado e estratégia de venda.",
+    icon: CarFront
+  },
+  {
+    title: "Divulgação ativa",
+    description: "O carro pode entrar no site, redes sociais e atendimento da loja.",
+    icon: Megaphone
+  },
+  {
+    title: "Venda acompanhada",
+    description: "Negociação e documentação recebem suporte até a transferência.",
+    icon: ShieldCheck
+  }
 ];
 
 const uploadFields = [
@@ -137,6 +170,35 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
                 Dados salvos para análise administrativa
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-b border-line bg-white py-10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-black uppercase tracking-[0.24em] text-graphite">
+            Como funciona
+          </p>
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {steps.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div key={step.title} className="rounded-lg border border-line bg-white p-5 shadow-sm">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="flex h-11 w-11 items-center justify-center rounded bg-ink text-white">
+                      <Icon size={21} />
+                    </span>
+                    <span className="text-sm font-black text-graphite">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h2 className="mt-5 text-lg font-black text-ink">{step.title}</h2>
+                  <p className="mt-2 text-sm leading-6 text-graphite">
+                    {step.description}
+                  </p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

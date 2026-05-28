@@ -30,7 +30,11 @@ Crie um `.env` a partir do `.env.example` se quiser alterar os valores padrao.
 ```bash
 DATABASE_URL="file:./dev.db"
 NEXT_PUBLIC_WHATSAPP_NUMBER="5541999866482"
+ADMIN_USER="admin"
+ADMIN_PASSWORD=""
 ```
+
+Defina `ADMIN_PASSWORD` em produção para proteger as rotas `/admin/*`.
 
 ## Rotas principais
 

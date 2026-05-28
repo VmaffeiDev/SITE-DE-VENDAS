@@ -1,13 +1,21 @@
-import { SlidersHorizontal } from "lucide-react";
+import type { Metadata } from "next";
+import { ArrowDownUp, MessageCircle, SlidersHorizontal } from "lucide-react";
 
 import { EmptyInventory } from "@/components/EmptyInventory";
 import { SectionHeader } from "@/components/SectionHeader";
 import { VehicleGrid } from "@/components/VehicleGrid";
+import { getWhatsAppLink } from "@/lib/contact";
 import { formatCurrency } from "@/lib/format";
 import { getInventoryVehicles } from "@/lib/inventory";
 import type { Vehicle } from "@/types/vehicle";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: "Estoque de veículos | VMAFFEI Motors",
+  description:
+    "Consulte veículos disponíveis na VMAFFEI Motors com filtros por marca, modelo, ano, preço, km, combustível e câmbio."
+};
 
 type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -30,6 +38,32 @@ function vehicleYear(vehicle: Vehicle) {
     vehicle.year.split("/").pop() ||
     ""
   );
+}
+
+function numericYear(vehicle: Vehicle) {
+  return Number(vehicle.modelYear || vehicle.fabricationYear || vehicleYear(vehicle)) || 0;
+}
+
+function sortVehicles(vehicles: Vehicle[], sort: string) {
+  return [...vehicles].sort((a, b) => {
+    if (sort === "price_asc") {
+      return (a.price ?? Number.MAX_SAFE_INTEGER) - (b.price ?? Number.MAX_SAFE_INTEGER);
+    }
+
+    if (sort === "price_desc") {
+      return (b.price ?? 0) - (a.price ?? 0);
+    }
+
+    if (sort === "km_asc") {
+      return (a.mileage ?? Number.MAX_SAFE_INTEGER) - (b.mileage ?? Number.MAX_SAFE_INTEGER);
+    }
+
+    if (sort === "year_desc") {
+      return numericYear(b) - numericYear(a);
+    }
+
+    return (b.lastUpdate ?? "").localeCompare(a.lastUpdate ?? "");
+  });
 }
 
 function matchesFilters(vehicle: Vehicle, filters: Record<string, string>) {
@@ -101,11 +135,15 @@ export default async function EstoquePage({ searchParams }: PageProps) {
     maxPrice: single(params.maxPrice),
     maxKm: single(params.maxKm),
     fuel: single(params.fuel),
-    transmission: single(params.transmission)
+    transmission: single(params.transmission),
+    sort: single(params.sort) || "latest"
   };
 
   const vehicles = await getInventoryVehicles();
-  const filteredVehicles = vehicles.filter((vehicle) => matchesFilters(vehicle, filters));
+  const filteredVehicles = sortVehicles(
+    vehicles.filter((vehicle) => matchesFilters(vehicle, filters)),
+    filters.sort
+  );
 
   const brands = unique(vehicles.map((vehicle) => vehicle.brand));
   const models = unique(
@@ -124,15 +162,21 @@ export default async function EstoquePage({ searchParams }: PageProps) {
           <SectionHeader
             eyebrow="Estoque"
             title="Veículos disponíveis"
-            description="Todos os anúncios publicados no Revenda Mais aparecem aqui automaticamente."
+            description="Filtre por marca, ano, valor e quilometragem. Se preferir, fale com a loja para receber indicação personalizada."
           />
-          <p className="text-sm font-semibold text-graphite">
-            {filteredVehicles.length} de {vehicles.length} veículo(s)
-          </p>
+          <a
+            href={getWhatsAppLink("Olá, quero ajuda para encontrar um veículo no estoque.")}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex w-fit items-center gap-2 rounded-lg bg-whatsapp px-5 py-3 text-sm font-black text-white shadow-soft transition hover:brightness-95"
+          >
+            <MessageCircle size={18} />
+            Ajuda pelo WhatsApp
+          </a>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[300px_1fr]">
-          <aside className="h-fit rounded border border-line bg-white p-5 shadow-sm">
+          <aside className="h-fit rounded-lg border border-line bg-white p-5 shadow-sm lg:sticky lg:top-28">
             <div className="mb-5 flex items-center gap-2 text-lg font-black text-ink">
               <SlidersHorizontal size={20} />
               Filtros
@@ -247,6 +291,17 @@ export default async function EstoquePage({ searchParams }: PageProps) {
                 </select>
               </label>
 
+              <label className="grid gap-2 text-sm font-bold text-ink">
+                Ordenar
+                <select name="sort" defaultValue={filters.sort} className="h-11 px-3">
+                  <option value="latest">Mais recentes</option>
+                  <option value="price_asc">Menor preço</option>
+                  <option value="price_desc">Maior preço</option>
+                  <option value="km_asc">Menor km</option>
+                  <option value="year_desc">Ano mais novo</option>
+                </select>
+              </label>
+
               <button className="rounded bg-ink px-5 py-3 text-sm font-black text-white transition hover:bg-graphite">
                 Aplicar filtros
               </button>
@@ -264,8 +319,27 @@ export default async function EstoquePage({ searchParams }: PageProps) {
               <EmptyInventory />
             ) : filteredVehicles.length ? (
               <>
-                <div className="mb-5 rounded border border-line bg-white px-4 py-3 text-sm text-graphite shadow-sm">
-                  Valores de {formatCurrency(0)} até o limite informado nos filtros.
+                <div className="mb-5 grid gap-3 rounded-lg border border-line bg-white p-4 text-sm text-graphite shadow-sm sm:grid-cols-[1fr_auto] sm:items-center">
+                  <div>
+                    <p className="font-black text-ink">
+                      {filteredVehicles.length} de {vehicles.length} veículo(s) encontrado(s)
+                    </p>
+                    <p className="mt-1">
+                      Valores filtráveis a partir de {formatCurrency(0)}. Confirme disponibilidade e condições com a loja.
+                    </p>
+                  </div>
+                  <p className="inline-flex items-center gap-2 rounded bg-mist px-3 py-2 font-bold text-ink">
+                    <ArrowDownUp size={16} />
+                    {filters.sort === "price_asc"
+                      ? "Menor preço"
+                      : filters.sort === "price_desc"
+                        ? "Maior preço"
+                        : filters.sort === "km_asc"
+                          ? "Menor km"
+                          : filters.sort === "year_desc"
+                            ? "Ano mais novo"
+                            : "Mais recentes"}
+                  </p>
                 </div>
                 <VehicleGrid vehicles={filteredVehicles} />
               </>
