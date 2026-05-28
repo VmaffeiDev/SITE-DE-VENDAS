@@ -56,10 +56,10 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
 
   return (
     <aside
-      className="group overflow-hidden rounded-lg border border-white/60 bg-ink text-white shadow-premium"
+      className="group overflow-hidden rounded-xl border border-white/70 bg-ink text-white shadow-premium"
       aria-label="Veículo em destaque"
     >
-      <div className="relative min-h-[330px] overflow-hidden bg-graphite sm:min-h-[420px]">
+      <div className="relative min-h-[390px] overflow-hidden bg-graphite sm:min-h-[520px] lg:min-h-[610px]">
         {image ? (
           <Image
             key={image}
@@ -67,24 +67,19 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
             alt={activeVehicle.title}
             fill
             priority
-            sizes="(min-width: 1024px) 560px, 100vw"
+            sizes="(min-width: 1280px) 1180px, 100vw"
             className="object-cover transition duration-700 group-hover:scale-[1.03]"
           />
         ) : (
-          <div className="flex h-full min-h-[330px] items-center justify-center bg-mist text-ink sm:min-h-[420px]">
+          <div className="flex h-full min-h-[390px] items-center justify-center bg-mist text-ink sm:min-h-[520px] lg:min-h-[610px]">
             <Sparkles size={44} />
           </div>
         )}
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/24 to-black/8" />
-
-        <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-ink shadow-soft">
-          <Sparkles size={15} />
-          Destaque
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/8 via-transparent to-black/10" />
 
         {vehicles.length > 1 ? (
-          <div className="absolute right-4 top-4 flex gap-2">
+          <div className="absolute right-4 top-4 flex gap-2 sm:right-6 sm:top-6">
             <button
               type="button"
               onClick={goToPrevious}
@@ -103,53 +98,56 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
             </button>
           </div>
         ) : null}
+      </div>
 
-        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-          <p className="mb-2 text-sm font-bold text-white/78">
-            Oferta selecionada da loja
+      <div className="grid gap-5 bg-white p-5 text-ink sm:p-7 lg:grid-cols-[1fr_auto] lg:items-end">
+        <div className="min-w-0">
+          <p className="inline-flex items-center gap-2 rounded bg-mist px-3 py-2 text-xs font-black uppercase tracking-[0.2em] text-graphite">
+            <Sparkles size={15} />
+            Destaque
           </p>
-          <h2 className="max-w-xl text-2xl font-black leading-tight tracking-tight sm:text-4xl">
+          <h2 className="mt-4 max-w-4xl text-2xl font-black leading-tight tracking-tight sm:text-4xl">
             {activeVehicle.title}
           </h2>
-          <div className="mt-4 flex flex-wrap gap-2 text-sm font-semibold text-white/88">
-            <span className="inline-flex items-center gap-2 rounded bg-white/14 px-3 py-2 backdrop-blur">
+          <div className="mt-4 flex flex-wrap gap-2 text-sm font-semibold text-graphite">
+            <span className="inline-flex items-center gap-2 rounded border border-line bg-white px-3 py-2">
               <CalendarDays size={16} />
               {formatYear(activeVehicle.year)}
             </span>
-            <span className="inline-flex items-center gap-2 rounded bg-white/14 px-3 py-2 backdrop-blur">
+            <span className="inline-flex items-center gap-2 rounded border border-line bg-white px-3 py-2">
               <Gauge size={16} />
               {formatMileage(activeVehicle.mileage)}
             </span>
             {activeVehicle.fuel ? (
-              <span className="inline-flex items-center gap-2 rounded bg-white/14 px-3 py-2 backdrop-blur">
+              <span className="inline-flex items-center gap-2 rounded border border-line bg-white px-3 py-2">
                 <Fuel size={16} />
                 {activeVehicle.fuel}
               </span>
             ) : null}
           </div>
         </div>
-      </div>
 
-      <div className="grid gap-5 bg-white p-5 text-ink sm:grid-cols-[1fr_auto] sm:items-center sm:p-6">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-graphite">
-            Valor anunciado
-          </p>
-          <p className="mt-1 text-3xl font-black tracking-tight">
-            {formatCurrency(activeVehicle.price)}
-          </p>
+        <div className="grid gap-4 sm:grid-cols-[auto_auto] sm:items-end lg:grid-cols-1 lg:justify-items-end">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.2em] text-graphite">
+              Valor anunciado
+            </p>
+            <p className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">
+              {formatCurrency(activeVehicle.price)}
+            </p>
+          </div>
+          <Link
+            href={`/veiculo/${activeVehicle.id}`}
+            className="inline-flex h-12 items-center justify-center gap-2 rounded bg-ink px-6 text-sm font-black text-white transition hover:bg-graphite"
+          >
+            Ver detalhes
+            <ArrowRight size={18} />
+          </Link>
         </div>
-        <Link
-          href={`/veiculo/${activeVehicle.id}`}
-          className="inline-flex h-12 items-center justify-center gap-2 rounded bg-ink px-5 text-sm font-black text-white transition hover:bg-graphite"
-        >
-          Ver detalhes
-          <ArrowRight size={18} />
-        </Link>
       </div>
 
       {vehicles.length > 1 ? (
-        <div className="flex items-center gap-2 border-t border-line bg-white px-5 pb-5 sm:px-6">
+        <div className="flex items-center gap-2 border-t border-line bg-white px-5 pb-5 sm:px-7">
           {vehicles.map((vehicle, index) => (
             <button
               key={`${vehicle.source}-${vehicle.id}`}

@@ -1,4 +1,4 @@
-const fallbackWhatsAppNumber = "554130102019";
+const fallbackWhatsAppNumber = "5541999866482";
 
 export const whatsAppNumber =
   process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.replace(/\D/g, "") ||

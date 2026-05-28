@@ -29,12 +29,12 @@ Crie um `.env` a partir do `.env.example` se quiser alterar os valores padrao.
 
 ```bash
 DATABASE_URL="file:./dev.db"
-NEXT_PUBLIC_WHATSAPP_NUMBER="554130102019"
+NEXT_PUBLIC_WHATSAPP_NUMBER="5541999866482"
 ```
 
 ## Rotas principais
 
-- `/`: home com hero, busca, destaques e ultimos adicionados.
+- `/`: home com carrossel de destaque, destaques e ultimos adicionados.
 - `/estoque`: listagem com filtros por marca, modelo, ano, preco, km, combustivel e cambio.
 - `/veiculo/[id]`: pagina detalhada do veiculo com galeria, ficha tecnica, descricao, opcionais e CTAs.
 - `/consignar`: formulario completo para consignacao de veiculos.
