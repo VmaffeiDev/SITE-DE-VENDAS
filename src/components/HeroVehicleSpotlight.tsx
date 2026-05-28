@@ -1,0 +1,168 @@
+"use client";
+
+import {
+  ArrowRight,
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  Fuel,
+  Gauge,
+  Sparkles
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+import { formatCurrency, formatMileage, formatYear } from "@/lib/format";
+import type { Vehicle } from "@/types/vehicle";
+
+type HeroVehicleSpotlightProps = {
+  vehicles: Vehicle[];
+};
+
+const rotationDelay = 6000;
+
+export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (vehicles.length <= 1) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => (current + 1) % vehicles.length);
+    }, rotationDelay);
+
+    return () => window.clearInterval(timer);
+  }, [vehicles.length]);
+
+  if (!vehicles.length) {
+    return null;
+  }
+
+  const activeVehicle = vehicles[activeIndex] ?? vehicles[0];
+  const image = activeVehicle.images[0];
+
+  const goToPrevious = () => {
+    setActiveIndex((current) =>
+      current === 0 ? vehicles.length - 1 : current - 1
+    );
+  };
+
+  const goToNext = () => {
+    setActiveIndex((current) => (current + 1) % vehicles.length);
+  };
+
+  return (
+    <aside
+      className="group overflow-hidden rounded-lg border border-white/60 bg-ink text-white shadow-premium"
+      aria-label="Veículo em destaque"
+    >
+      <div className="relative min-h-[330px] overflow-hidden bg-graphite sm:min-h-[420px]">
+        {image ? (
+          <Image
+            key={image}
+            src={image}
+            alt={activeVehicle.title}
+            fill
+            priority
+            sizes="(min-width: 1024px) 560px, 100vw"
+            className="object-cover transition duration-700 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div className="flex h-full min-h-[330px] items-center justify-center bg-mist text-ink sm:min-h-[420px]">
+            <Sparkles size={44} />
+          </div>
+        )}
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/88 via-black/24 to-black/8" />
+
+        <div className="absolute left-4 top-4 inline-flex items-center gap-2 rounded bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.22em] text-ink shadow-soft">
+          <Sparkles size={15} />
+          Destaque
+        </div>
+
+        {vehicles.length > 1 ? (
+          <div className="absolute right-4 top-4 flex gap-2">
+            <button
+              type="button"
+              onClick={goToPrevious}
+              aria-label="Veículo anterior"
+              className="flex h-10 w-10 items-center justify-center rounded bg-white/92 text-ink shadow-soft transition hover:bg-white"
+            >
+              <ChevronLeft size={19} />
+            </button>
+            <button
+              type="button"
+              onClick={goToNext}
+              aria-label="Próximo veículo"
+              className="flex h-10 w-10 items-center justify-center rounded bg-white/92 text-ink shadow-soft transition hover:bg-white"
+            >
+              <ChevronRight size={19} />
+            </button>
+          </div>
+        ) : null}
+
+        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
+          <p className="mb-2 text-sm font-bold text-white/78">
+            Oferta selecionada da loja
+          </p>
+          <h2 className="max-w-xl text-2xl font-black leading-tight tracking-tight sm:text-4xl">
+            {activeVehicle.title}
+          </h2>
+          <div className="mt-4 flex flex-wrap gap-2 text-sm font-semibold text-white/88">
+            <span className="inline-flex items-center gap-2 rounded bg-white/14 px-3 py-2 backdrop-blur">
+              <CalendarDays size={16} />
+              {formatYear(activeVehicle.year)}
+            </span>
+            <span className="inline-flex items-center gap-2 rounded bg-white/14 px-3 py-2 backdrop-blur">
+              <Gauge size={16} />
+              {formatMileage(activeVehicle.mileage)}
+            </span>
+            {activeVehicle.fuel ? (
+              <span className="inline-flex items-center gap-2 rounded bg-white/14 px-3 py-2 backdrop-blur">
+                <Fuel size={16} />
+                {activeVehicle.fuel}
+              </span>
+            ) : null}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid gap-5 bg-white p-5 text-ink sm:grid-cols-[1fr_auto] sm:items-center sm:p-6">
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-graphite">
+            Valor anunciado
+          </p>
+          <p className="mt-1 text-3xl font-black tracking-tight">
+            {formatCurrency(activeVehicle.price)}
+          </p>
+        </div>
+        <Link
+          href={`/veiculo/${activeVehicle.id}`}
+          className="inline-flex h-12 items-center justify-center gap-2 rounded bg-ink px-5 text-sm font-black text-white transition hover:bg-graphite"
+        >
+          Ver detalhes
+          <ArrowRight size={18} />
+        </Link>
+      </div>
+
+      {vehicles.length > 1 ? (
+        <div className="flex items-center gap-2 border-t border-line bg-white px-5 pb-5 sm:px-6">
+          {vehicles.map((vehicle, index) => (
+            <button
+              key={`${vehicle.source}-${vehicle.id}`}
+              type="button"
+              aria-label={`Mostrar destaque ${index + 1}`}
+              onClick={() => setActiveIndex(index)}
+              className={`h-1.5 flex-1 rounded-full transition ${
+                index === activeIndex ? "bg-ink" : "bg-line hover:bg-graphite/30"
+              }`}
+            />
+          ))}
+        </div>
+      ) : null}
+    </aside>
+  );
+}

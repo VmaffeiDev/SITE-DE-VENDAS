@@ -12,7 +12,9 @@ const config: Config = {
         whatsapp: "#25d366"
       },
       boxShadow: {
-        soft: "0 16px 40px rgba(15, 23, 42, 0.08)"
+        soft: "0 16px 40px rgba(15, 23, 42, 0.08)",
+        premium:
+          "0 24px 70px rgba(15, 23, 42, 0.14), 0 8px 22px rgba(15, 23, 42, 0.08)"
       }
     }
   },

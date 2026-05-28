@@ -1,4 +1,4 @@
-import { CalendarDays, Gauge, Sparkles } from "lucide-react";
+import { ArrowRight, CalendarDays, Gauge, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,7 +13,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
   const image = vehicle.images[0];
 
   return (
-    <article className="group overflow-hidden rounded border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-soft">
+    <article className="group overflow-hidden rounded-lg border border-line bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-premium">
       <Link href={`/veiculo/${vehicle.id}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-mist">
           {image ? (
@@ -29,9 +29,13 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               <Sparkles size={34} />
             </div>
           )}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 to-transparent opacity-80" />
+          <span className="absolute left-3 top-3 rounded bg-white px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-ink shadow-soft">
+            Disponível
+          </span>
         </div>
 
-        <div className="space-y-4 p-4">
+        <div className="space-y-4 p-5">
           <div>
             <h3 className="line-clamp-2 min-h-[3.25rem] text-lg font-black leading-snug text-ink">
               {vehicle.title}
@@ -53,10 +57,17 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
           </div>
 
           <div className="flex items-end justify-between gap-3 border-t border-line pt-4">
-            <p className="text-2xl font-black text-ink">
-              {formatCurrency(vehicle.price)}
-            </p>
-            <span className="text-sm font-extrabold text-ink">Ver detalhes</span>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-graphite">
+                Preço
+              </p>
+              <p className="mt-1 text-2xl font-black text-ink">
+                {formatCurrency(vehicle.price)}
+              </p>
+            </div>
+            <span className="inline-flex h-10 w-10 items-center justify-center rounded bg-mist text-ink transition group-hover:bg-ink group-hover:text-white">
+              <ArrowRight size={18} />
+            </span>
           </div>
         </div>
       </Link>
