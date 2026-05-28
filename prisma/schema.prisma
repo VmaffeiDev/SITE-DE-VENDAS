@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ConsignmentLead {
+  id          String   @id @default(cuid())
+  name        String
+  phone       String
+  email       String
+  city        String
+  brand       String
+  model       String
+  version     String?
+  year        Int?
+  mileage     Int?
+  plate       String?
+  color       String?
+  askingPrice Float?
+  notes       String?
+  images      String   @default("[]")
+  status      String   @default("pendente_avaliacao")
+  createdAt   DateTime @default(now())
+  vehicle     Vehicle?
+}
+
+model Vehicle {
+  id                String           @id
+  consignmentLeadId String?          @unique
+  title             String
+  brand             String
+  model             String
+  version           String?
+  year              Int?
+  mileage           Int?
+  price             Float?
+  fuel              String?
+  transmission      String?
+  color             String?
+  description       String?
+  images            String           @default("[]")
+  features          String           @default("[]")
+  source            String           @default("consignment")
+  createdAt         DateTime         @default(now())
+  consignmentLead   ConsignmentLead? @relation(fields: [consignmentLeadId], references: [id])
+}

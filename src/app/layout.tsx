@@ -1,0 +1,30 @@
+import type { Metadata } from "next";
+
+import { Footer } from "@/components/Footer";
+import { Header } from "@/components/Header";
+import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "VMAFFEI Motors | Veículos selecionados",
+  description:
+    "Estoque de veículos da VMAFFEI Motors sincronizado automaticamente pelo Revenda Mais.",
+  metadataBase: new URL("https://vmaffei-motors.vercel.app")
+};
+
+export default function RootLayout({
+  children
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="pt-BR">
+      <body>
+        <Header />
+        <main>{children}</main>
+        <Footer />
+        <WhatsAppFloatingButton />
+      </body>
+    </html>
+  );
+}
