@@ -1,5 +1,4 @@
 import { ArrowRight, MessageCircle, Quote, ShieldCheck, Star } from "lucide-react";
-import Image from "next/image";
 
 import { getWhatsAppLink } from "@/lib/contact";
 
@@ -132,7 +131,7 @@ export function GoogleReviews() {
               <p className="text-xs font-black uppercase tracking-[0.2em] text-white/55">
                 Prints reais
               </p>
-              <p className="mt-1 font-black text-white">Avaliações do Google</p>
+              <p className="mt-1 font-black text-white">Depoimentos do Google</p>
             </div>
             <a
               href={getWhatsAppLink("Olá, vi as avaliações da VMAFFEI Motors e quero atendimento.")}
@@ -145,16 +144,30 @@ export function GoogleReviews() {
             </a>
           </div>
 
-          <div className="mt-4 overflow-hidden rounded-lg border border-white/10 bg-[#2f343b]">
-            <Image
-              src="/reviews/google-reviews-proof.jpg"
-              alt="Painel com prints reais de avaliações Google da VMAFFEI Motors"
-              width={976}
-              height={782}
-              quality={95}
-              sizes="(min-width: 1280px) 1164px, 100vw"
-              className="h-auto w-full"
-            />
+          <div className="mt-4 flex snap-x gap-4 overflow-x-auto pb-2">
+            {reviews.map((review) => (
+              <article
+                key={review.author}
+                className="w-[290px] shrink-0 snap-start rounded-lg border border-white/10 bg-[#2f343b] p-4 text-white shadow-soft sm:w-[360px]"
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex min-w-0 items-center gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-whatsapp text-sm font-black uppercase text-white">
+                      {review.author.charAt(0)}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-black">{review.author}</p>
+                      <p className="text-xs text-white/50">avaliação no Google</p>
+                    </div>
+                  </div>
+                  <Quote size={20} className="shrink-0 text-white/25" />
+                </div>
+                <div className="mt-4">
+                  <RatingStars />
+                </div>
+                <p className="mt-4 text-sm leading-6 text-white/78">{review.text}</p>
+              </article>
+            ))}
           </div>
 
           <a
