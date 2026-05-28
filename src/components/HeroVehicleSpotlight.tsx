@@ -56,41 +56,26 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
 
   return (
     <aside
-      className="group overflow-hidden rounded-xl border border-white/70 bg-ink text-white shadow-premium"
+      className="group overflow-hidden rounded-xl border border-white/70 bg-white text-white shadow-premium"
       aria-label="Veículo em destaque"
     >
-      <div className="relative min-h-[390px] overflow-hidden bg-graphite sm:min-h-[520px] lg:min-h-[610px]">
+      <div className="relative aspect-[4/3] overflow-hidden bg-white">
         {image ? (
-          <>
-            <Image
-              key={`${image}-backdrop`}
-              src={image}
-              alt=""
-              fill
-              priority
-              unoptimized
-              aria-hidden="true"
-              sizes="100vw"
-              className="scale-110 object-cover opacity-35 blur-2xl"
-            />
-            <Image
-              key={image}
-              src={image}
-              alt={activeVehicle.title}
-              fill
-              priority
-              unoptimized
-              sizes="(min-width: 1280px) 1180px, 100vw"
-              className="object-contain p-2 transition duration-700 sm:p-4 lg:p-5"
-            />
-          </>
+          <Image
+            key={image}
+            src={image}
+            alt={activeVehicle.title}
+            fill
+            priority
+            unoptimized
+            sizes="(min-width: 1280px) 1216px, 100vw"
+            className="object-contain"
+          />
         ) : (
-          <div className="flex h-full min-h-[390px] items-center justify-center bg-mist text-ink sm:min-h-[520px] lg:min-h-[610px]">
+          <div className="flex h-full items-center justify-center bg-mist text-ink">
             <Sparkles size={44} />
           </div>
         )}
-
-        <div className="absolute inset-0 bg-gradient-to-t from-black/8 via-transparent to-black/10" />
 
         {vehicles.length > 1 ? (
           <div className="absolute right-4 top-4 flex gap-2 sm:right-6 sm:top-6">
