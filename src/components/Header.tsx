@@ -1,6 +1,7 @@
-import { Car, MessageCircle } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 
+import { BrandMark } from "@/components/BrandMark";
 import { getWhatsAppLink } from "@/lib/contact";
 
 const navItems = [
@@ -14,18 +15,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/92 shadow-sm backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-ink text-white shadow-soft">
-            <Car size={22} strokeWidth={2.3} />
-          </span>
-          <span className="leading-tight">
-            <span className="block text-base font-black tracking-wide text-ink">
-              VMAFFEI
-            </span>
-            <span className="block text-xs font-semibold uppercase tracking-[0.22em] text-graphite">
-              Motors
-            </span>
-          </span>
+        <Link href="/" className="min-w-0">
+          <BrandMark className="max-w-[245px] sm:max-w-none" />
         </Link>
 
         <nav className="hidden items-center rounded-lg border border-line bg-mist/70 p-1 text-sm font-bold text-graphite md:flex">
@@ -41,7 +32,9 @@ export function Header() {
         </nav>
 
         <a
-          href={getWhatsAppLink("Olá, quero falar com a VMAFFEI Motors.")}
+          href={getWhatsAppLink(
+            "Olá, quero falar com o consultor Victor Maffei da Squ4ttro Motors."
+          )}
           target="_blank"
           rel="noreferrer"
           className="inline-flex h-11 items-center gap-2 rounded-lg bg-whatsapp px-4 text-sm font-extrabold text-white shadow-soft transition hover:-translate-y-0.5 hover:brightness-95"

@@ -206,7 +206,6 @@ export default async function Home() {
             <SectionHeader
               eyebrow="Últimos adicionados"
               title="Novidades no estoque"
-              description="Atualização automática a cada 5 minutos com base no XML do Revenda Mais."
             />
             <Link
               href="/estoque"

@@ -2,12 +2,32 @@ import {
   ArrowRight,
   MapPin,
   MessageCircle,
+  Navigation,
   Search,
   ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
 
+import { BrandMark } from "@/components/BrandMark";
 import { getWhatsAppLink } from "@/lib/contact";
+
+const stores = [
+  {
+    name: "Loja Auto Shopping Curitiba",
+    address: "BR-116, 7500 - Tarumã, Curitiba - PR, 82590-400",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=BR-116%2C%207500%20-%20Tarum%C3%A3%2C%20Curitiba%20-%20PR"
+  },
+  {
+    name: "Loja Hauer",
+    address: "Rua Anne Frank, 2096 - Hauer, Curitiba - PR",
+    mapsUrl:
+      "https://www.google.com/maps/search/?api=1&query=Rua%20Anne%20Frank%2C%202096%20-%20Hauer%2C%20Curitiba%20-%20PR"
+  }
+];
+
+const mapEmbedUrl =
+  "https://maps.google.com/maps?hl=pt-BR&q=BR-116%2C%207500%20-%20Tarum%C3%A3%2C%20Curitiba%20-%20PR&z=15&output=embed";
 
 export function Footer() {
   return (
@@ -47,9 +67,73 @@ export function Footer() {
         </div>
       </div>
 
+      <div className="border-b border-white/10 bg-[#141414]">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-stretch lg:px-8">
+          <div>
+            <p className="text-xs font-black uppercase tracking-[0.24em] text-white/50">
+              Nossas lojas
+            </p>
+            <h2 className="mt-2 text-2xl font-black tracking-tight text-white sm:text-3xl">
+              Atendimento presencial em Curitiba
+            </h2>
+            <div className="mt-6 grid gap-3">
+              {stores.map((store) => (
+                <div
+                  key={store.name}
+                  className="rounded-lg border border-white/10 bg-white/[0.06] p-4"
+                >
+                  <p className="flex items-center gap-2 font-black text-white">
+                    <MapPin size={18} />
+                    {store.name}
+                  </p>
+                  <p className="mt-2 text-sm leading-6 text-white/70">
+                    {store.address}
+                  </p>
+                  <a
+                    href={store.mapsUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-3 inline-flex items-center gap-2 text-sm font-black text-whatsapp"
+                  >
+                    <Navigation size={16} />
+                    Abrir rota no Maps
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative min-h-[320px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] shadow-premium">
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+              <MapPin size={32} className="text-whatsapp" />
+              <p className="mt-3 text-sm font-black text-white">
+                Mapa da loja Auto Shopping Curitiba
+              </p>
+              <a
+                href={stores[0].mapsUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-3 inline-flex items-center gap-2 text-sm font-black text-whatsapp"
+              >
+                <Navigation size={16} />
+                Abrir no Google Maps
+              </a>
+            </div>
+            <iframe
+              title="Mapa da loja Auto Shopping Curitiba"
+              src={mapEmbedUrl}
+              className="relative z-10 h-full min-h-[320px] w-full border-0"
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+      </div>
+
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-3 lg:px-8">
         <div>
-          <p className="text-lg font-black">VMAFFEI Motors</p>
+          <BrandMark invert />
           <p className="mt-3 max-w-sm text-sm leading-6 text-white/70">
             Veículos selecionados, atendimento consultivo e negociação segura do
             primeiro contato até a entrega.
