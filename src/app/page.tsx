@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 
 import { EmptyInventory } from "@/components/EmptyInventory";
+import { GoogleReviews } from "@/components/GoogleReviews";
 import { HeroVehicleSpotlight } from "@/components/HeroVehicleSpotlight";
 import { SectionHeader } from "@/components/SectionHeader";
 import { VehicleGrid } from "@/components/VehicleGrid";
@@ -196,6 +197,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <GoogleReviews />
 
       <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
