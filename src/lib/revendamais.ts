@@ -79,14 +79,40 @@ function splitAccessories(value: unknown) {
     .filter(Boolean);
 }
 
+function imageQualityRank(image: string) {
+  if (/_O_/i.test(image)) {
+    return 0;
+  }
+
+  if (/_W_/i.test(image)) {
+    return 1;
+  }
+
+  return 2;
+}
+
+function canonicalImageKey(image: string) {
+  return image.replace(/_W_/gi, "_O_");
+}
+
 function imageList(ad: XmlRecord) {
   const largeImages = asRecord(ad.IMAGES_LARGE)?.IMAGE_URL_LARGE;
   const regularImages = asRecord(ad.IMAGES)?.IMAGE_URL;
+  const bestImages = new Map<string, string>();
 
-  return [...asArray(largeImages), ...asArray(regularImages)]
+  [...asArray(largeImages), ...asArray(regularImages)]
     .map(text)
     .filter(Boolean)
-    .filter((image, index, images) => images.indexOf(image) === index);
+    .forEach((image) => {
+      const key = canonicalImageKey(image);
+      const currentImage = bestImages.get(key);
+
+      if (!currentImage || imageQualityRank(image) < imageQualityRank(currentImage)) {
+        bestImages.set(key, image);
+      }
+    });
+
+  return Array.from(bestImages.values());
 }
 
 function normalizedTitle(ad: XmlRecord) {

@@ -61,15 +61,29 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
     >
       <div className="relative min-h-[390px] overflow-hidden bg-graphite sm:min-h-[520px] lg:min-h-[610px]">
         {image ? (
-          <Image
-            key={image}
-            src={image}
-            alt={activeVehicle.title}
-            fill
-            priority
-            sizes="(min-width: 1280px) 1180px, 100vw"
-            className="object-cover transition duration-700 group-hover:scale-[1.03]"
-          />
+          <>
+            <Image
+              key={`${image}-backdrop`}
+              src={image}
+              alt=""
+              fill
+              priority
+              unoptimized
+              aria-hidden="true"
+              sizes="100vw"
+              className="scale-110 object-cover opacity-35 blur-2xl"
+            />
+            <Image
+              key={image}
+              src={image}
+              alt={activeVehicle.title}
+              fill
+              priority
+              unoptimized
+              sizes="(min-width: 1280px) 1180px, 100vw"
+              className="object-contain p-2 transition duration-700 sm:p-4 lg:p-5"
+            />
+          </>
         ) : (
           <div className="flex h-full min-h-[390px] items-center justify-center bg-mist text-ink sm:min-h-[520px] lg:min-h-[610px]">
             <Sparkles size={44} />

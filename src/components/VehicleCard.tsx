@@ -21,8 +21,9 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               src={image}
               alt={vehicle.title}
               fill
+              quality={92}
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-              className="object-cover transition duration-500 group-hover:scale-105"
+              className="object-cover transition duration-500 group-hover:scale-[1.02]"
             />
           ) : (
             <div className="flex h-full items-center justify-center text-graphite">
