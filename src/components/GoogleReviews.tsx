@@ -149,8 +149,8 @@ export function GoogleReviews() {
             <Image
               src="/reviews/google-reviews-proof.jpg"
               alt="Painel com prints reais de avaliações Google da VMAFFEI Motors"
-              width={1164}
-              height={930}
+              width={976}
+              height={782}
               quality={95}
               sizes="(min-width: 1280px) 1164px, 100vw"
               className="h-auto w-full"
