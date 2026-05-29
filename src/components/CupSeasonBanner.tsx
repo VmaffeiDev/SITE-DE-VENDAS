@@ -44,18 +44,25 @@ export function CupSeasonBanner() {
 
         <div className="cup-logo-stage" aria-label="Animação da Squ4ttro em clima de Copa">
           <div className="cup-pitch-lines" aria-hidden />
-          <div className="cup-wordmark" aria-hidden>
-            <span>SQU</span>
-            <span className="text-[#e11d24]">4</span>
-            <span>TTR</span>
-            <span className="cup-final-o">O</span>
+          <div className="cup-scoreboard" aria-hidden>
+            SQU4TTRO FC
           </div>
-          <span className="cup-s-header" aria-hidden>
-            S
-          </span>
-          <span className="cup-ball" aria-hidden />
+          <div className="cup-field-team" aria-hidden>
+            {["S", "Q", "U", "4", "T", "T", "R", "O"].map((letter, index) => (
+              <span
+                key={`${letter}-${index}`}
+                className={`cup-player-letter ${
+                  letter === "4" ? "cup-player-four" : ""
+                } ${letter === "O" && index === 7 ? "cup-player-goal" : ""}`}
+                style={{ "--delay": `${index * 0.16}s` } as React.CSSProperties}
+              >
+                {letter}
+              </span>
+            ))}
+          </div>
+          <span className="cup-match-ball" aria-hidden />
           <span className="sr-only">
-            O S da Squ4ttro cabeceia a última letra O para completar a marca.
+            As letras da palavra Squ4ttro jogam uma partida de futebol no campo.
           </span>
         </div>
       </div>
