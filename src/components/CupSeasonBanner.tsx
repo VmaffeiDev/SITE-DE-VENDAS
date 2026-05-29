@@ -3,6 +3,25 @@ import Link from "next/link";
 
 import { getWhatsAppLink } from "@/lib/contact";
 
+const cupPlayers = [
+  { letter: "S", x: "15%", y: "38%", className: "cup-player-green" },
+  { letter: "Q", x: "28%", y: "64%", className: "cup-player-yellow" },
+  { letter: "U", x: "41%", y: "36%", className: "cup-player-blue" },
+  { letter: "4", x: "51%", y: "58%", className: "cup-player-white" },
+  { letter: "T", x: "62%", y: "35%", className: "cup-player-green" },
+  { letter: "T", x: "72%", y: "63%", className: "cup-player-yellow" },
+  { letter: "R", x: "82%", y: "38%", className: "cup-player-blue" },
+  { letter: "O", x: "91%", y: "56%", className: "cup-player-goal" },
+];
+
+const crowd = Array.from({ length: 28 }, (_, index) => index);
+const confetti = Array.from({ length: 48 }, (_, index) => ({
+  id: index,
+  left: `${(index * 17) % 100}%`,
+  delay: `${(index % 16) * 0.16}s`,
+  duration: `${2.8 + (index % 6) * 0.18}s`,
+}));
+
 export function CupSeasonBanner() {
   return (
     <section className="mt-6 overflow-hidden rounded-xl border border-white/70 bg-ink text-white shadow-premium">
@@ -43,26 +62,66 @@ export function CupSeasonBanner() {
         </div>
 
         <div className="cup-logo-stage" aria-label="Animação da Squ4ttro em clima de Copa">
+          <div className="cup-confetti" aria-hidden>
+            {confetti.map((piece) => (
+              <span
+                key={piece.id}
+                className="cup-confetti-piece"
+                style={
+                  {
+                    "--confetti-left": piece.left,
+                    "--confetti-delay": piece.delay,
+                    "--confetti-duration": piece.duration,
+                  } as React.CSSProperties
+                }
+              />
+            ))}
+          </div>
+          <div className="cup-crowd cup-crowd-top" aria-hidden>
+            {crowd.map((fan) => (
+              <span
+                key={`top-${fan}`}
+                className="cup-fan"
+                style={{ "--fan-delay": `${fan * 0.06}s` } as React.CSSProperties}
+              />
+            ))}
+          </div>
+          <div className="cup-crowd cup-crowd-bottom" aria-hidden>
+            {crowd.map((fan) => (
+              <span
+                key={`bottom-${fan}`}
+                className="cup-fan"
+                style={{ "--fan-delay": `${fan * 0.05}s` } as React.CSSProperties}
+              />
+            ))}
+          </div>
           <div className="cup-pitch-lines" aria-hidden />
+          <div className="cup-goal cup-goal-left" aria-hidden />
+          <div className="cup-goal cup-goal-right" aria-hidden />
           <div className="cup-scoreboard" aria-hidden>
             SQU4TTRO FC
           </div>
           <div className="cup-field-team" aria-hidden>
-            {["S", "Q", "U", "4", "T", "T", "R", "O"].map((letter, index) => (
+            {cupPlayers.map((player, index) => (
               <span
-                key={`${letter}-${index}`}
-                className={`cup-player-letter ${
-                  letter === "4" ? "cup-player-four" : ""
-                } ${letter === "O" && index === 7 ? "cup-player-goal" : ""}`}
-                style={{ "--delay": `${index * 0.16}s` } as React.CSSProperties}
+                key={`${player.letter}-${index}`}
+                className={`cup-player-letter ${player.className ?? ""}`}
+                style={
+                  {
+                    "--x": player.x,
+                    "--y": player.y,
+                    "--kick-delay": `${index * -0.72}s`,
+                  } as React.CSSProperties
+                }
               >
-                {letter}
+                {player.letter}
               </span>
             ))}
+            <span className="cup-match-ball" aria-hidden />
           </div>
-          <span className="cup-match-ball" aria-hidden />
           <span className="sr-only">
-            As letras da palavra Squ4ttro jogam uma partida de futebol no campo.
+            As letras da palavra Squ4ttro trocam passes dentro de um campo de
+            futebol com traves e torcedores nas laterais.
           </span>
         </div>
       </div>
