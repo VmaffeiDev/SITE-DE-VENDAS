@@ -57,3 +57,559 @@ textarea:focus {
   background: #111111;
   color: #ffffff;
 }
+
+.brand-icon-motion {
+  animation: brand-icon-breathe 5.4s ease-in-out infinite;
+}
+
+.brand-icon-motion::after {
+  position: absolute;
+  inset: -40% -85%;
+  content: "";
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.34) 46%,
+    transparent 58%
+  );
+  transform: translateX(-70%) rotate(8deg);
+  animation: brand-shine 4.8s ease-in-out infinite;
+}
+
+.brand-s4-motion {
+  animation: brand-s4-pop 4.8s ease-in-out infinite;
+}
+
+.brand-underline-motion {
+  transform-origin: left center;
+  animation: brand-red-line 4.8s ease-in-out infinite;
+}
+
+.brand-four-motion {
+  display: inline-block;
+  animation: brand-four-pop 4.8s ease-in-out infinite;
+}
+
+.brand-consultor-line {
+  transform-origin: left center;
+  animation: brand-consultor-line 4.8s ease-in-out infinite;
+}
+
+@keyframes brand-icon-breathe {
+  0%,
+  100% {
+    transform: translateY(0);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+  }
+  48% {
+    transform: translateY(-1px);
+    box-shadow:
+      0 18px 44px rgba(15, 23, 42, 0.13),
+      0 0 0 4px rgba(225, 29, 36, 0.06);
+  }
+}
+
+@keyframes brand-shine {
+  0%,
+  48% {
+    transform: translateX(-70%) rotate(8deg);
+    opacity: 0;
+  }
+  58% {
+    opacity: 1;
+  }
+  76%,
+  100% {
+    transform: translateX(70%) rotate(8deg);
+    opacity: 0;
+  }
+}
+
+@keyframes brand-s4-pop {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+  52% {
+    transform: scale(1.08) rotate(-3deg);
+  }
+  64% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes brand-red-line {
+  0%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0.95;
+  }
+  50% {
+    transform: scaleX(0.55);
+    opacity: 0.75;
+  }
+  70% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes brand-four-pop {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    text-shadow: none;
+  }
+  52% {
+    transform: translateY(-1px) scale(1.08);
+    text-shadow: 0 0 14px rgba(225, 29, 36, 0.32);
+  }
+}
+
+@keyframes brand-consultor-line {
+  0%,
+  100% {
+    transform: scaleX(1);
+  }
+  54% {
+    transform: scaleX(1.45);
+  }
+}
+
+.cup-home-bg {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(0, 156, 59, 0.2), transparent 34%),
+    radial-gradient(circle at 90% 0%, rgba(255, 223, 0, 0.24), transparent 32%),
+    linear-gradient(180deg, #ffffff 0%, #f7f8fa 54%, #eef0f3 100%);
+}
+
+.cup-logo-stage {
+  position: relative;
+  min-height: 286px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background:
+    radial-gradient(circle at 80% 18%, rgba(255, 223, 0, 0.2), transparent 28%),
+    radial-gradient(circle at 16% 82%, rgba(0, 39, 118, 0.22), transparent 30%),
+    linear-gradient(135deg, #005f2f 0%, #009c3b 48%, #063f2a 100%);
+  isolation: isolate;
+}
+
+.cup-logo-stage::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  z-index: 0;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.3), transparent 18% 82%, rgba(0, 0, 0, 0.28)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.18), transparent 25% 75%, rgba(0, 0, 0, 0.22));
+}
+
+.cup-pitch-lines {
+  position: absolute;
+  inset: 44px 54px;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0 40px, rgba(255, 255, 255, 0.2) 41px 42px, transparent 43px),
+    linear-gradient(90deg, transparent 0 49.6%, rgba(255, 255, 255, 0.22) 49.6% 50.4%, transparent 50.4%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 56px);
+}
+
+.cup-pitch-lines::before,
+.cup-pitch-lines::after {
+  position: absolute;
+  top: 50%;
+  width: 86px;
+  height: 118px;
+  content: "";
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%);
+}
+
+.cup-pitch-lines::before {
+  left: -1px;
+  border-left: 0;
+  border-radius: 0 16px 16px 0;
+}
+
+.cup-pitch-lines::after {
+  right: -1px;
+  border-right: 0;
+  border-radius: 16px 0 0 16px;
+}
+
+.cup-crowd {
+  position: absolute;
+  right: 42px;
+  left: 42px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: repeat(28, minmax(4px, 1fr));
+  gap: 5px;
+  pointer-events: none;
+}
+
+.cup-crowd-top {
+  top: 12px;
+}
+
+.cup-crowd-bottom {
+  bottom: 12px;
+}
+
+.cup-fan {
+  justify-self: center;
+  width: clamp(5px, 0.7vw, 9px);
+  height: clamp(5px, 0.7vw, 9px);
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
+  animation: cup-crowd-bounce 1.8s ease-in-out infinite;
+  animation-delay: var(--fan-delay);
+}
+
+.cup-fan:nth-child(4n + 1) {
+  background: #ffdf00;
+}
+
+.cup-fan:nth-child(4n + 2) {
+  background: #e11d24;
+}
+
+.cup-fan:nth-child(4n + 3) {
+  background: #002776;
+}
+
+.cup-confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cup-confetti-piece {
+  --confetti-left: 50%;
+  --confetti-delay: 0s;
+  --confetti-duration: 3s;
+  position: absolute;
+  top: -18px;
+  left: var(--confetti-left);
+  width: 7px;
+  height: 13px;
+  border-radius: 2px;
+  background: #ffdf00;
+  opacity: 0.9;
+  animation: cup-confetti-fall var(--confetti-duration) linear infinite;
+  animation-delay: var(--confetti-delay);
+}
+
+.cup-confetti-piece:nth-child(4n + 1) {
+  background: #009c3b;
+}
+
+.cup-confetti-piece:nth-child(4n + 2) {
+  background: #002776;
+}
+
+.cup-confetti-piece:nth-child(4n + 3) {
+  background: #ffffff;
+}
+
+.cup-goal {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  width: 28px;
+  height: 98px;
+  border: 2px solid rgba(255, 255, 255, 0.72);
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.22) 0 1px, transparent 1px 12px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.18) 0 1px, transparent 1px 12px);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%);
+}
+
+.cup-goal-left {
+  left: 28px;
+  border-right: 0;
+  border-radius: 12px 0 0 12px;
+}
+
+.cup-goal-right {
+  right: 28px;
+  border-left: 0;
+  border-radius: 0 12px 12px 0;
+}
+
+.cup-scoreboard {
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  z-index: 5;
+  transform: translateX(-50%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+  background: rgba(17, 17, 17, 0.32);
+  padding: 0.45rem 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.66rem;
+  font-weight: 950;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cup-field-team {
+  position: absolute;
+  inset: 44px 54px;
+  z-index: 6;
+}
+
+.cup-player-letter {
+  --x: 50%;
+  --y: 50%;
+  --kick-delay: 0s;
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  display: grid;
+  width: clamp(34px, 6.2vw, 68px);
+  height: clamp(34px, 6.2vw, 68px);
+  place-items: center;
+  color: var(--player-color, #ffffff);
+  font-size: clamp(1.8rem, 5.5vw, 4.8rem);
+  font-weight: 950;
+  letter-spacing: 0;
+  line-height: 1;
+  text-shadow:
+    0 18px 34px rgba(0, 0, 0, 0.34),
+    0 0 18px var(--player-glow, rgba(255, 255, 255, 0.18));
+  transform: translate(-50%, -50%);
+  animation: cup-player-kick 7.2s ease-in-out infinite;
+  animation-delay: var(--kick-delay);
+}
+
+.cup-player-letter::after {
+  position: absolute;
+  right: 18%;
+  bottom: -9px;
+  left: 18%;
+  height: 6px;
+  content: "";
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.22);
+  filter: blur(3px);
+  transform: scaleX(0.85);
+  animation: cup-player-shadow 7.2s ease-in-out infinite;
+  animation-delay: var(--kick-delay);
+}
+
+.cup-player-green {
+  --player-color: #22c55e;
+  --player-glow: rgba(34, 197, 94, 0.36);
+}
+
+.cup-player-yellow {
+  --player-color: #ffdf00;
+  --player-glow: rgba(255, 223, 0, 0.42);
+}
+
+.cup-player-blue {
+  --player-color: #60a5fa;
+  --player-glow: rgba(96, 165, 250, 0.42);
+}
+
+.cup-player-white {
+  --player-color: #ffffff;
+  --player-glow: rgba(255, 255, 255, 0.34);
+}
+
+.cup-player-goal {
+  --player-color: #ffdf00;
+  --player-glow: rgba(255, 223, 0, 0.56);
+}
+
+.cup-match-ball {
+  position: absolute;
+  z-index: 8;
+  left: 15%;
+  top: 38%;
+  width: clamp(18px, 2.8vw, 28px);
+  height: clamp(18px, 2.8vw, 28px);
+  border: 2px solid #111111;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 50% 50%, #111111 0 13%, transparent 14%),
+    linear-gradient(45deg, transparent 0 43%, #111111 44% 48%, transparent 49%),
+    linear-gradient(-45deg, transparent 0 43%, #111111 44% 48%, transparent 49%),
+    #ffffff;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+  transform: translate(-50%, -50%);
+  animation: cup-match-ball 7.2s cubic-bezier(0.42, 0, 0.18, 1) infinite;
+}
+
+@keyframes cup-crowd-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes cup-confetti-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0) rotate(0deg);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.95;
+    transform: translate3d(28px, 340px, 0) rotate(520deg);
+  }
+}
+
+@keyframes cup-player-kick {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  10% {
+    transform: translate(-50%, -76%) scale(1.08) rotate(-4deg);
+  }
+  18% {
+    transform: translate(-50%, -50%) scale(1) rotate(2deg);
+  }
+  28% {
+    transform: translate(-50%, -64%) scale(1.04) rotate(4deg);
+  }
+  36% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes cup-player-shadow {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scaleX(0.85);
+  }
+  10%,
+  28% {
+    opacity: 0.42;
+    transform: scaleX(0.58);
+  }
+}
+
+@keyframes cup-match-ball {
+  0% {
+    left: 15%;
+    top: 38%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+  12% {
+    left: 28%;
+    top: 64%;
+    transform: translate(-50%, -50%) scale(0.96) rotate(135deg);
+  }
+  24% {
+    left: 41%;
+    top: 36%;
+    transform: translate(-50%, -50%) scale(1) rotate(270deg);
+  }
+  36% {
+    left: 51%;
+    top: 58%;
+    transform: translate(-50%, -50%) scale(0.97) rotate(405deg);
+  }
+  48% {
+    left: 62%;
+    top: 35%;
+    transform: translate(-50%, -50%) scale(1) rotate(540deg);
+  }
+  60% {
+    left: 72%;
+    top: 63%;
+    transform: translate(-50%, -50%) scale(0.97) rotate(675deg);
+  }
+  72% {
+    left: 82%;
+    top: 38%;
+    transform: translate(-50%, -50%) scale(1) rotate(810deg);
+  }
+  84% {
+    left: 91%;
+    top: 56%;
+    transform: translate(-50%, -50%) scale(0.98) rotate(945deg);
+  }
+  92% {
+    left: 99%;
+    top: 50%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.9) rotate(1080deg);
+  }
+  96% {
+    left: 101%;
+    top: 50%;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.75) rotate(1120deg);
+  }
+  100% {
+    left: 15%;
+    top: 38%;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+@media (max-width: 640px) {
+  .cup-logo-stage {
+    min-height: 254px;
+  }
+
+  .cup-pitch-lines,
+  .cup-field-team {
+    inset: 42px 30px;
+  }
+
+  .cup-goal {
+    width: 18px;
+    height: 76px;
+  }
+
+  .cup-goal-left {
+    left: 12px;
+  }
+
+  .cup-goal-right {
+    right: 12px;
+  }
+
+  .cup-crowd {
+    right: 18px;
+    left: 18px;
+    gap: 3px;
+  }
+
+  .cup-scoreboard {
+    top: 32px;
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cup-logo-stage {
+    min-height: 320px;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 0;
+  }
+}
