@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import {
   BadgeCheck,
@@ -19,6 +18,7 @@ import {
 import { formatCurrency, formatLabel, formatMileage, formatYear } from "@/lib/format";
 import { getInventoryVehicleById } from "@/lib/inventory";
 import { getWhatsAppLink } from "@/lib/contact";
+import { VehicleGallery } from "@/components/VehicleGallery";
 
 export const revalidate = 300;
 
@@ -59,7 +59,6 @@ export default async function VehiclePage({ params }: PageProps) {
     notFound();
   }
 
-  const mainImage = vehicle.images[0];
   const interestMessage = `Olá, tenho interesse no veículo ${vehicle.title} (${vehicle.id}).`;
   const testDriveMessage = `Olá, quero agendar um test drive do veículo ${vehicle.title}.`;
   const financeMessage = `Olá, quero simular financiamento do veículo ${vehicle.title}.`;
@@ -117,45 +116,7 @@ export default async function VehiclePage({ params }: PageProps) {
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="space-y-4">
-            <div className="relative aspect-[4/3] overflow-hidden rounded-lg border border-line bg-white shadow-sm">
-              {mainImage ? (
-                <Image
-                  src={mainImage}
-                  alt={vehicle.title}
-                  fill
-                  priority
-                  unoptimized
-                  sizes="(min-width: 1024px) 58vw, 100vw"
-                  className="object-contain"
-                />
-              ) : (
-                <div className="flex h-full items-center justify-center text-graphite">
-                  Foto indisponível
-                </div>
-              )}
-            </div>
-
-            {vehicle.images.length > 1 ? (
-              <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
-                {vehicle.images.slice(1, 11).map((image, index) => (
-                  <div
-                    key={`${image}-${index}`}
-                    className="relative aspect-[4/3] overflow-hidden rounded border border-line bg-white"
-                  >
-                    <Image
-                      src={image}
-                      alt={`${vehicle.title} foto ${index + 2}`}
-                      fill
-                      quality={92}
-                      sizes="(min-width: 1024px) 120px, 20vw"
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-            ) : null}
-          </div>
+          <VehicleGallery images={vehicle.images} title={vehicle.title} />
 
           <aside className="h-fit rounded-lg border border-line bg-white p-5 shadow-sm lg:sticky lg:top-28 lg:p-7">
             <p className="text-xs font-black uppercase tracking-[0.24em] text-graphite">
