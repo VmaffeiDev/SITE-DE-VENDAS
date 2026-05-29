@@ -38,7 +38,7 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
   }
 
   return (
-    <div className="space-y-4" aria-label={`Galeria de fotos: ${title}`}>
+    <div className="min-w-0 space-y-4" aria-label={`Galeria de fotos: ${title}`}>
       <div className="relative overflow-hidden rounded-lg border border-line bg-white shadow-sm">
         <div className="relative aspect-[4/3] bg-white">
           {activeImage ? (
@@ -86,7 +86,10 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
       </div>
 
       {hasMultipleImages ? (
-        <div className="flex gap-3 overflow-x-auto pb-2" aria-label="Miniaturas">
+        <div
+          className="flex max-w-full gap-3 overflow-x-auto pb-2"
+          aria-label="Miniaturas"
+        >
           {galleryImages.map((image, index) => {
             const isActive = index === activeIndex;
 
