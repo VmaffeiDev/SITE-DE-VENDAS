@@ -7,8 +7,7 @@ import { getWhatsAppLink } from "@/lib/contact";
 const navItems = [
   { href: "/", label: "Início" },
   { href: "/estoque", label: "Estoque" },
-  { href: "/consignar", label: "Consignar" },
-  { href: "/admin/consignados", label: "Admin" }
+  { href: "/consignar", label: "Consignar" }
 ];
 
 export function Header() {
