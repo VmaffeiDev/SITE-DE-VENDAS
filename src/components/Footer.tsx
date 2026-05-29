@@ -168,9 +168,6 @@ export function Footer() {
           <Link href="/consignar" className="transition hover:text-white">
             Consignar meu veículo
           </Link>
-          <Link href="/admin/consignados" className="transition hover:text-white">
-            Painel de consignados
-          </Link>
         </div>
       </div>
     </footer>
