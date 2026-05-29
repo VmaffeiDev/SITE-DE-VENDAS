@@ -54,6 +54,10 @@ export function Header() {
           </Link>
         ))}
       </nav>
+      <div
+        className="h-1 bg-[linear-gradient(90deg,#009c3b_0%,#009c3b_42%,#ffdf00_42%,#ffdf00_58%,#002776_58%,#002776_100%)]"
+        aria-hidden
+      />
     </header>
   );
 }
