@@ -115,7 +115,7 @@ export default async function VehiclePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <VehicleGallery images={vehicle.images} title={vehicle.title} />
 
           <aside className="h-fit rounded-lg border border-line bg-white p-5 shadow-sm lg:sticky lg:top-28 lg:p-7">
