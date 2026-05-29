@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 
 import { EmptyInventory } from "@/components/EmptyInventory";
+import { CupSeasonBanner } from "@/components/CupSeasonBanner";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { HeroVehicleSpotlight } from "@/components/HeroVehicleSpotlight";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -85,13 +86,14 @@ export default async function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden border-b border-line bg-[radial-gradient(circle_at_top,#ffffff_0%,#f7f8fa_48%,#eef0f3_100%)]">
+      <section className="cup-home-bg relative overflow-hidden border-b border-line">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
           {heroVehicles.length ? (
             <HeroVehicleSpotlight vehicles={heroVehicles} />
           ) : (
             <EmptyInventory />
           )}
+          <CupSeasonBanner />
         </div>
       </section>
 
