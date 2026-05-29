@@ -13,9 +13,9 @@ const navItems = [
 export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/92 shadow-sm backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
         <Link href="/" className="min-w-0">
-          <BrandMark className="max-w-[245px] sm:max-w-none" />
+          <BrandMark className="max-w-[calc(100vw-6.5rem)] sm:max-w-none" />
         </Link>
 
         <nav className="hidden items-center rounded-lg border border-line bg-mist/70 p-1 text-sm font-bold text-graphite md:flex">
@@ -36,10 +36,10 @@ export function Header() {
           )}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex h-11 items-center gap-2 rounded-lg bg-whatsapp px-4 text-sm font-extrabold text-white shadow-soft transition hover:-translate-y-0.5 hover:brightness-95"
+          className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-whatsapp px-0 text-sm font-extrabold text-white shadow-soft transition hover:-translate-y-0.5 hover:brightness-95 sm:w-auto sm:px-4"
         >
           <MessageCircle size={18} />
-          WhatsApp
+          <span className="hidden sm:inline">WhatsApp</span>
         </a>
       </div>
 
