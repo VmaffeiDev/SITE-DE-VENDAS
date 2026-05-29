@@ -5,9 +5,9 @@ type BrandMarkProps = {
 
 export function BrandMark({ className = "", invert = false }: BrandMarkProps) {
   return (
-    <span className={`flex min-w-0 items-center gap-3.5 ${className}`}>
+    <span className={`flex min-w-0 items-center gap-2 sm:gap-3.5 ${className}`}>
       <span
-        className={`brand-icon-motion relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border shadow-soft ${
+        className={`brand-icon-motion relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-[10px] border shadow-soft sm:h-12 sm:w-12 ${
           invert
             ? "border-white/20 bg-white text-ink"
             : "border-black/10 bg-[linear-gradient(145deg,#050505_0%,#1b1b1b_55%,#050505_100%)] text-white"
@@ -25,26 +25,26 @@ export function BrandMark({ className = "", invert = false }: BrandMarkProps) {
       </span>
       <span className="min-w-0 leading-tight">
         <span
-          className={`block truncate text-[17px] font-black tracking-[0.16em] ${
+          className={`block whitespace-nowrap text-[14px] font-black tracking-[0.12em] sm:text-[17px] sm:tracking-[0.16em] ${
             invert ? "text-white" : "text-ink"
           }`}
         >
           SQU<span className="brand-four-motion text-[#e11d24]">4</span>TTRO
         </span>
         <span
-          className={`block text-[11px] font-semibold uppercase tracking-[0.34em] ${
+          className={`block text-[9px] font-semibold uppercase tracking-[0.28em] sm:text-[11px] sm:tracking-[0.34em] ${
             invert ? "text-white/70" : "text-graphite"
           }`}
         >
           Motors
         </span>
         <span
-          className={`mt-1.5 flex min-w-0 items-center gap-2 text-[11px] font-bold ${
+          className={`mt-1 flex min-w-0 items-center gap-1.5 whitespace-nowrap text-[8.5px] font-bold min-[380px]:text-[9.5px] sm:mt-1.5 sm:gap-2 sm:text-[11px] ${
             invert ? "text-white/60" : "text-graphite"
           }`}
         >
-          <span className="brand-consultor-line h-px w-6 shrink-0 bg-[#e11d24]" />
-          <span className="truncate">Consultor de Vendas: Victor Maffei</span>
+          <span className="brand-consultor-line h-px w-4 shrink-0 bg-[#e11d24] sm:w-6" />
+          <span>Consultor de Vendas: Victor Maffei</span>
         </span>
       </span>
     </span>
