@@ -36,6 +36,11 @@ ADMIN_PASSWORD=""
 
 Defina `ADMIN_PASSWORD` em produção para proteger as rotas `/admin/*`.
 
+## Dominio e contato
+
+- Site: `https://consultordevendasvictormaffei.com`
+- Email: `atendimento@consultordevendasvictormaffei.com`
+
 ## Rotas principais
 
 - `/`: home com carrossel de destaque, destaques e ultimos adicionados.
