@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Mail,
   MapPin,
   MessageCircle,
   Navigation,
@@ -150,6 +151,13 @@ export function Footer() {
             Atendimento presencial e digital
           </p>
           <p className="font-semibold text-white">41 99986-6482</p>
+          <a
+            href="mailto:atendimento@consultordevendasvictormaffei.com"
+            className="flex items-center gap-2 break-all transition hover:text-white"
+          >
+            <Mail size={18} className="shrink-0" />
+            atendimento@consultordevendasvictormaffei.com
+          </a>
           <a
             href={getWhatsAppLink("Olá, quero atendimento da VMAFFEI Motors.")}
             target="_blank"
