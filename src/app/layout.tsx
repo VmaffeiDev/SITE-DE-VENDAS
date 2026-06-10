@@ -9,7 +9,15 @@ export const metadata: Metadata = {
   title: "VMAFFEI Motors | Veículos selecionados",
   description:
     "Estoque de veículos da VMAFFEI Motors sincronizado automaticamente pelo Revenda Mais.",
-  metadataBase: new URL("https://vmaffei-motors.vercel.app")
+  metadataBase: new URL("https://consultordevendasvictormaffei.com"),
+  alternates: {
+    canonical: "/"
+  },
+  openGraph: {
+    siteName: "Consultor de Vendas Victor Maffei",
+    locale: "pt_BR",
+    type: "website"
+  }
 };
 
 export default function RootLayout({
