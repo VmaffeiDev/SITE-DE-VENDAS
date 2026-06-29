@@ -1,0 +1,304 @@
+From 1f596fa2ac7662bd282dbc20a67eb7dffac44a51 Mon Sep 17 00:00:00 2001
+From: Claude <noreply@anthropic.com>
+Date: Mon, 29 Jun 2026 16:00:25 +0000
+Subject: [PATCH] =?UTF-8?q?Seguran=C3=A7a,=20qualidade=20e=20performance:?=
+ =?UTF-8?q?=20an=C3=A1lise=20completa=20aplicada?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Autenticação HTTP Basic no painel admin (/admin/*) via middleware.ts;
+  em produção bloqueia acesso se ADMIN_PASSWORD não estiver configurado
+- Validação de magic bytes no upload de fotos (JPEG, PNG, GIF, WebP)
+  para impedir envio de arquivos mascarados como imagens
+- Validação de formato de ID nas Server Actions do admin
+- Índices Prisma em ConsignmentLead (status, createdAt) e Vehicle
+  (brand+model, createdAt) para queries mais rápidas com volume
+- onDelete: SetNull explícito na relação Vehicle → ConsignmentLead
+- Campos de upload centralizados em lib/upload-fields.ts,
+  eliminando duplicação entre consignar/page.tsx e route.ts
+- tsconfig.json: target ES2020, noImplicitReturns, noFallthroughCasesInSwitch
+- package.json: script type-check adicionado
+- .env.example: documentação clara sobre ADMIN_PASSWORD e comportamento
+  por ambiente (dev vs produção)
+
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01GspPvoPnWL5yaEcsj1s4EE
+---
+ .env.example                         |  5 +++
+ package.json                         |  1 +
+ prisma/schema.prisma                 |  8 ++++-
+ src/app/admin/consignados/actions.ts |  3 +-
+ src/app/api/consignments/route.ts    | 36 ++++++++++++++-----
+ src/app/consignar/page.tsx           | 11 ++----
+ src/lib/upload-fields.ts             |  7 ++++
+ src/middleware.ts                    | 53 ++++++++++++++++++++++++++++
+ tsconfig.json                        |  4 ++-
+ 9 files changed, 107 insertions(+), 21 deletions(-)
+ create mode 100644 src/lib/upload-fields.ts
+ create mode 100644 src/middleware.ts
+
+diff --git a/.env.example b/.env.example
+index 138874b..84e7a14 100644
+--- a/.env.example
++++ b/.env.example
+@@ -1,4 +1,9 @@
+ DATABASE_URL="file:./dev.db"
+ NEXT_PUBLIC_WHATSAPP_NUMBER="5541999866482"
++
++# Credenciais do painel administrativo (/admin/consignados)
++# Em produção, defina uma senha forte. Sem ADMIN_PASSWORD definido,
++# o acesso ao admin é bloqueado em produção (HTTP 503).
++# Em desenvolvimento (NODE_ENV=development), o acesso é liberado sem senha.
+ ADMIN_USER="admin"
+ ADMIN_PASSWORD=""
+diff --git a/package.json b/package.json
+index c5f3ddb..c20e8b1 100644
+--- a/package.json
++++ b/package.json
+@@ -7,6 +7,7 @@
+     "build": "prisma generate && next build",
+     "start": "next start",
+     "lint": "next lint",
++    "type-check": "tsc --noEmit",
+     "db:push": "node scripts/ensure-sqlite-db.mjs && prisma db push",
+     "db:studio": "prisma studio",
+     "cap:sync": "npx cap sync",
+diff --git a/prisma/schema.prisma b/prisma/schema.prisma
+index 7d1924a..683a15e 100644
+--- a/prisma/schema.prisma
++++ b/prisma/schema.prisma
+@@ -26,6 +26,9 @@ model ConsignmentLead {
+   status      String   @default("pendente_avaliacao")
+   createdAt   DateTime @default(now())
+   vehicle     Vehicle?
++
++  @@index([status])
++  @@index([createdAt])
+ }
+ 
+ model Vehicle {
+@@ -46,5 +49,8 @@ model Vehicle {
+   features          String           @default("[]")
+   source            String           @default("consignment")
+   createdAt         DateTime         @default(now())
+-  consignmentLead   ConsignmentLead? @relation(fields: [consignmentLeadId], references: [id])
++  consignmentLead   ConsignmentLead? @relation(fields: [consignmentLeadId], references: [id], onDelete: SetNull)
++
++  @@index([brand, model])
++  @@index([createdAt])
+ }
+diff --git a/src/app/admin/consignados/actions.ts b/src/app/admin/consignados/actions.ts
+index d186557..07fad9a 100644
+--- a/src/app/admin/consignados/actions.ts
++++ b/src/app/admin/consignados/actions.ts
+@@ -9,7 +9,8 @@ import {
+ } from "@/types/consignment";
+ 
+ function idFrom(formData: FormData) {
+-  return String(formData.get("id") ?? "").trim();
++  const id = String(formData.get("id") ?? "").trim();
++  return /^[a-z0-9_-]{10,40}$/i.test(id) ? id : "";
+ }
+ 
+ function isConsignmentStatus(status: string): status is ConsignmentStatus {
+diff --git a/src/app/api/consignments/route.ts b/src/app/api/consignments/route.ts
+index 2b3700d..5cb0fb4 100644
+--- a/src/app/api/consignments/route.ts
++++ b/src/app/api/consignments/route.ts
+@@ -4,21 +4,35 @@ import path from "path";
+ import { NextResponse } from "next/server";
+ 
+ import { parseFlexibleNumber } from "@/lib/format";
++import { UPLOAD_FIELDS } from "@/lib/upload-fields";
+ import { prisma } from "@/lib/prisma";
+ import type { ConsignmentImage } from "@/types/consignment";
+ 
+ export const runtime = "nodejs";
+ 
+-const uploadFields = [
+-  { name: "frontImages", label: "Foto frontal", slug: "frontal" },
+-  { name: "rearImages", label: "Traseira", slug: "traseira" },
+-  { name: "sideImages", label: "Lateral", slug: "lateral" },
+-  { name: "interiorImages", label: "Interior", slug: "interior" },
+-  { name: "dashboardImages", label: "Painel", slug: "painel" }
+-];
+-
+ const maxImageSize = 8 * 1024 * 1024;
+ 
++async function isValidImageMagicBytes(file: File): Promise<boolean> {
++  const slice = file.slice(0, 12);
++  const buffer = Buffer.from(await slice.arrayBuffer());
++  if (buffer.length < 4) return false;
++
++  // JPEG: FF D8 FF
++  if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return true;
++  // PNG: 89 50 4E 47
++  if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) return true;
++  // GIF: GIF8
++  if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x38) return true;
++  // WebP: RIFF....WEBP
++  if (
++    buffer.length >= 12 &&
++    buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46 &&
++    buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50
++  ) return true;
++
++  return false;
++}
++
+ function stringField(formData: FormData, name: string) {
+   return String(formData.get(name) ?? "").trim();
+ }
+@@ -63,7 +77,7 @@ async function saveImages(leadId: string, formData: FormData) {
+ 
+   await mkdir(uploadDir, { recursive: true });
+ 
+-  for (const field of uploadFields) {
++  for (const field of UPLOAD_FIELDS) {
+     const files = formData.getAll(field.name).filter(isUploadFile);
+ 
+     for (const [index, file] of files.entries()) {
+@@ -71,6 +85,10 @@ async function saveImages(leadId: string, formData: FormData) {
+         continue;
+       }
+ 
++      if (!(await isValidImageMagicBytes(file))) {
++        continue;
++      }
++
+       const extension = safeExtension(file.name, file.type);
+       const fileName = `${field.slug}-${index + 1}-${randomUUID()}${extension}`;
+       const filePath = path.join(uploadDir, fileName);
+diff --git a/src/app/consignar/page.tsx b/src/app/consignar/page.tsx
+index 89dd582..1ebc5dc 100644
+--- a/src/app/consignar/page.tsx
++++ b/src/app/consignar/page.tsx
+@@ -13,6 +13,7 @@ import {
+ } from "lucide-react";
+ 
+ import { getWhatsAppLink } from "@/lib/contact";
++import { UPLOAD_FIELDS } from "@/lib/upload-fields";
+ 
+ type PageProps = {
+   searchParams?: Promise<Record<string, string | string[] | undefined>>;
+@@ -56,14 +57,6 @@ const steps = [
+   }
+ ];
+ 
+-const uploadFields = [
+-  { name: "frontImages", label: "Foto frontal" },
+-  { name: "rearImages", label: "Traseira" },
+-  { name: "sideImages", label: "Lateral" },
+-  { name: "interiorImages", label: "Interior" },
+-  { name: "dashboardImages", label: "Painel" }
+-];
+-
+ const faq = [
+   {
+     question: "Como funciona a consignação?",
+@@ -299,7 +292,7 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
+                 Você pode enviar múltiplas imagens em cada campo.
+               </p>
+               <div className="mt-4 grid gap-4 sm:grid-cols-2">
+-                {uploadFields.map((field) => (
++                {UPLOAD_FIELDS.map((field) => (
+                   <label
+                     key={field.name}
+                     className="grid gap-2 rounded border border-dashed border-gray-300 bg-mist p-4 text-sm font-bold text-ink"
+diff --git a/src/lib/upload-fields.ts b/src/lib/upload-fields.ts
+new file mode 100644
+index 0000000..1342d8d
+--- /dev/null
++++ b/src/lib/upload-fields.ts
+@@ -0,0 +1,7 @@
++export const UPLOAD_FIELDS = [
++  { name: "frontImages", label: "Foto frontal", slug: "frontal" },
++  { name: "rearImages", label: "Traseira", slug: "traseira" },
++  { name: "sideImages", label: "Lateral", slug: "lateral" },
++  { name: "interiorImages", label: "Interior", slug: "interior" },
++  { name: "dashboardImages", label: "Painel", slug: "painel" }
++] as const;
+diff --git a/src/middleware.ts b/src/middleware.ts
+new file mode 100644
+index 0000000..9b3a8ec
+--- /dev/null
++++ b/src/middleware.ts
+@@ -0,0 +1,53 @@
++import { NextResponse } from "next/server";
++import type { NextRequest } from "next/server";
++
++function unauthorized() {
++  return new NextResponse(null, {
++    status: 401,
++    headers: {
++      "WWW-Authenticate": 'Basic realm="Admin VMAFFEI Motors", charset="UTF-8"'
++    }
++  });
++}
++
++export function middleware(request: NextRequest) {
++  const adminPassword = process.env.ADMIN_PASSWORD;
++  const adminUser = process.env.ADMIN_USER || "admin";
++
++  if (!adminPassword) {
++    if (process.env.NODE_ENV === "production") {
++      return new NextResponse("ADMIN_PASSWORD não configurado no servidor.", {
++        status: 503,
++        headers: { "Content-Type": "text/plain; charset=utf-8" }
++      });
++    }
++    return NextResponse.next();
++  }
++
++  const authHeader = request.headers.get("Authorization");
++
++  if (!authHeader?.startsWith("Basic ")) {
++    return unauthorized();
++  }
++
++  try {
++    const decoded = atob(authHeader.slice(6));
++    const colonIndex = decoded.indexOf(":");
++    if (colonIndex < 0) return unauthorized();
++
++    const user = decoded.slice(0, colonIndex);
++    const password = decoded.slice(colonIndex + 1);
++
++    if (user !== adminUser || password !== adminPassword) {
++      return unauthorized();
++    }
++  } catch {
++    return unauthorized();
++  }
++
++  return NextResponse.next();
++}
++
++export const config = {
++  matcher: ["/admin/:path*"]
++};
+diff --git a/tsconfig.json b/tsconfig.json
+index f4fda14..aca53ef 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -1,6 +1,6 @@
+ {
+   "compilerOptions": {
+-    "target": "ES2017",
++    "target": "ES2020",
+     "lib": ["dom", "dom.iterable", "esnext"],
+     "allowJs": false,
+     "skipLibCheck": true,
+@@ -13,6 +13,8 @@
+     "isolatedModules": true,
+     "jsx": "preserve",
+     "incremental": true,
++    "noImplicitReturns": true,
++    "noFallthroughCasesInSwitch": true,
+     "plugins": [
+       {
+         "name": "next"
+-- 
+2.43.0
+
