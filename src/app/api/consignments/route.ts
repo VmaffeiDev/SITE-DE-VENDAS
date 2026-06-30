@@ -4,20 +4,24 @@ import path from "path";
 import { NextResponse } from "next/server";
 
 import { parseFlexibleNumber } from "@/lib/format";
+import { UPLOAD_FIELDS } from "@/lib/upload-fields";
 import { prisma } from "@/lib/prisma";
 import type { ConsignmentImage } from "@/types/consignment";
 
 export const runtime = "nodejs";
 
-const uploadFields = [
-  { name: "frontImages", label: "Foto frontal", slug: "frontal" },
-  { name: "rearImages", label: "Traseira", slug: "traseira" },
-  { name: "sideImages", label: "Lateral", slug: "lateral" },
-  { name: "interiorImages", label: "Interior", slug: "interior" },
-  { name: "dashboardImages", label: "Painel", slug: "painel" }
-];
-
 const maxImageSize = 8 * 1024 * 1024;
+
+async function isValidImageMagicBytes(file: File): Promise<boolean> {
+  const slice = file.slice(0, 12);
+  const buffer = Buffer.from(await slice.arrayBuffer());
+  if (buffer.length < 4) return false;
+  if (buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return true;
+  if (buffer[0] === 0x89 && buffer[1] === 0x50 && buffer[2] === 0x4e && buffer[3] === 0x47) return true;
+  if (buffer[0] === 0x47 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x38) return true;
+  if (buffer.length >= 12 && buffer[0] === 0x52 && buffer[1] === 0x49 && buffer[2] === 0x46 && buffer[3] === 0x46 && buffer[8] === 0x57 && buffer[9] === 0x45 && buffer[10] === 0x42 && buffer[11] === 0x50) return true;
+  return false;
+}
 
 function stringField(formData: FormData, name: string) {
   return String(formData.get(name) ?? "").trim();
@@ -63,11 +67,15 @@ async function saveImages(leadId: string, formData: FormData) {
 
   await mkdir(uploadDir, { recursive: true });
 
-  for (const field of uploadFields) {
+  for (const field of UPLOAD_FIELDS) {
     const files = formData.getAll(field.name).filter(isUploadFile);
 
     for (const [index, file] of files.entries()) {
       if (!file.size || !file.type.startsWith("image/") || file.size > maxImageSize) {
+        continue;
+      }
+
+      if (!(await isValidImageMagicBytes(file))) {
         continue;
       }
 

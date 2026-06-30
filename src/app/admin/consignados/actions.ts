@@ -9,7 +9,8 @@ import {
 } from "@/types/consignment";
 
 function idFrom(formData: FormData) {
-  return String(formData.get("id") ?? "").trim();
+  const id = String(formData.get("id") ?? "").trim();
+  return /^[a-z0-9_-]{10,40}$/i.test(id) ? id : "";
 }
 
 function isConsignmentStatus(status: string): status is ConsignmentStatus {

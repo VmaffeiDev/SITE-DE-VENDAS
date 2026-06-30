@@ -12,6 +12,7 @@ import {
   ShieldCheck
 } from "lucide-react";
 
+import { UPLOAD_FIELDS } from "@/lib/upload-fields";
 import { getWhatsAppLink } from "@/lib/contact";
 
 type PageProps = {
@@ -54,14 +55,6 @@ const steps = [
     description: "Negociação e documentação recebem suporte até a transferência.",
     icon: ShieldCheck
   }
-];
-
-const uploadFields = [
-  { name: "frontImages", label: "Foto frontal" },
-  { name: "rearImages", label: "Traseira" },
-  { name: "sideImages", label: "Lateral" },
-  { name: "interiorImages", label: "Interior" },
-  { name: "dashboardImages", label: "Painel" }
 ];
 
 const faq = [
@@ -299,7 +292,7 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
                 Você pode enviar múltiplas imagens em cada campo.
               </p>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                {uploadFields.map((field) => (
+                {UPLOAD_FIELDS.map((field) => (
                   <label
                     key={field.name}
                     className="grid gap-2 rounded border border-dashed border-gray-300 bg-mist p-4 text-sm font-bold text-ink"
