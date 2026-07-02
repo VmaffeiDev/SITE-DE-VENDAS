@@ -50,4 +50,7 @@ model Vehicle {
   source            String           @default("consignment")
   createdAt         DateTime         @default(now())
   consignmentLead   ConsignmentLead? @relation(fields: [consignmentLeadId], references: [id], onDelete: SetNull)
+
+  @@index([brand, model])
+  @@index([createdAt])
 }
