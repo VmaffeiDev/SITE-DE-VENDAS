@@ -8,6 +8,8 @@ import {
   type ConsignmentStatus
 } from "@/types/consignment";
 
+type ActionResult = { success: boolean; error?: string };
+
 function idFrom(formData: FormData) {
   const id = String(formData.get("id") ?? "").trim();
   return /^[a-z0-9_-]{10,40}$/i.test(id) ? id : "";
@@ -17,9 +19,9 @@ function isConsignmentStatus(status: string): status is ConsignmentStatus {
   return CONSIGNMENT_STATUSES.includes(status as ConsignmentStatus);
 }
 
-async function setStatus(id: string, status: ConsignmentStatus) {
+async function setStatus(id: string, status: ConsignmentStatus): Promise<ActionResult> {
   if (!id) {
-    return;
+    return { success: false, error: "id_invalido" };
   }
 
   await prisma.consignmentLead.update({
@@ -29,21 +31,22 @@ async function setStatus(id: string, status: ConsignmentStatus) {
 
   revalidatePath("/admin/consignados");
   revalidatePath("/estoque");
+  return { success: true };
 }
 
-export async function approveConsignment(formData: FormData) {
+export async function approveConsignment(formData: FormData): Promise<void> {
   await setStatus(idFrom(formData), "aprovado");
 }
 
-export async function refuseConsignment(formData: FormData) {
+export async function refuseConsignment(formData: FormData): Promise<void> {
   await setStatus(idFrom(formData), "recusado");
 }
 
-export async function markConsignmentSold(formData: FormData) {
+export async function markConsignmentSold(formData: FormData): Promise<void> {
   await setStatus(idFrom(formData), "vendido");
 }
 
-export async function updateConsignmentStatus(formData: FormData) {
+export async function updateConsignmentStatus(formData: FormData): Promise<void> {
   const id = idFrom(formData);
   const status = String(formData.get("status") ?? "");
 
@@ -54,7 +57,7 @@ export async function updateConsignmentStatus(formData: FormData) {
   await setStatus(id, status);
 }
 
-export async function convertConsignmentToVehicle(formData: FormData) {
+export async function convertConsignmentToVehicle(formData: FormData): Promise<void> {
   const id = idFrom(formData);
 
   if (!id) {

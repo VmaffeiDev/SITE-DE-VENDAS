@@ -7,6 +7,7 @@ import { VehicleGrid } from "@/components/VehicleGrid";
 import { getWhatsAppLink } from "@/lib/contact";
 import { formatCurrency } from "@/lib/format";
 import { getInventoryVehicles } from "@/lib/inventory";
+import { single } from "@/lib/params";
 import type { Vehicle } from "@/types/vehicle";
 
 export const revalidate = 300;
@@ -14,16 +15,15 @@ export const revalidate = 300;
 export const metadata: Metadata = {
   title: "Estoque de veículos | VMAFFEI Motors",
   description:
-    "Consulte veículos disponíveis na VMAFFEI Motors com filtros por marca, modelo, ano, preço, km, combustível e câmbio."
+    "Consulte veículos disponíveis na VMAFFEI Motors com filtros por marca, modelo, ano, preço, km, combustível e câmbio.",
+  alternates: {
+    canonical: "/estoque"
+  }
 };
 
 type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
-
-function single(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
-}
 
 function unique(values: string[]) {
   return Array.from(new Set(values.filter(Boolean))).sort((a, b) =>

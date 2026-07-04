@@ -11,6 +11,7 @@ import type { ConsignmentImage } from "@/types/consignment";
 export const runtime = "nodejs";
 
 const maxImageSize = 8 * 1024 * 1024;
+const maxImagesPerField = 10;
 
 async function isValidImageMagicBytes(file: File): Promise<boolean> {
   const slice = file.slice(0, 12);
@@ -68,7 +69,7 @@ async function saveImages(leadId: string, formData: FormData) {
   await mkdir(uploadDir, { recursive: true });
 
   for (const field of UPLOAD_FIELDS) {
-    const files = formData.getAll(field.name).filter(isUploadFile);
+    const files = formData.getAll(field.name).filter(isUploadFile).slice(0, maxImagesPerField);
 
     for (const [index, file] of files.entries()) {
       if (!file.size || !file.type.startsWith("image/") || file.size > maxImageSize) {

@@ -14,6 +14,7 @@ import {
 
 import { UPLOAD_FIELDS } from "@/lib/upload-fields";
 import { getWhatsAppLink } from "@/lib/contact";
+import { single } from "@/lib/params";
 
 type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -22,7 +23,10 @@ type PageProps = {
 export const metadata: Metadata = {
   title: "Consignar veículo | VMAFFEI Motors",
   description:
-    "Venda seu carro em consignação com a VMAFFEI Motors. Avaliação, divulgação, atendimento aos interessados e suporte até a transferência."
+    "Venda seu carro em consignação com a VMAFFEI Motors. Avaliação, divulgação, atendimento aos interessados e suporte até a transferência.",
+  alternates: {
+    canonical: "/consignar"
+  }
 };
 
 const benefits = [
@@ -80,13 +84,7 @@ const faq = [
   }
 ];
 
-function inputClass() {
-  return "h-12 px-3 text-sm";
-}
-
-function single(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] ?? "" : value ?? "";
-}
+const inputClass = "h-12 px-3 text-sm";
 
 export default async function ConsignarPage({ searchParams }: PageProps) {
   const params = (await searchParams) ?? {};
@@ -228,51 +226,51 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Nome completo
-                <input name="name" required className={inputClass()} />
+                <input name="name" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Telefone
-                <input name="phone" required className={inputClass()} />
+                <input name="phone" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Email
-                <input name="email" type="email" required className={inputClass()} />
+                <input name="email" type="email" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Cidade
-                <input name="city" required className={inputClass()} />
+                <input name="city" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Marca do veículo
-                <input name="brand" required className={inputClass()} />
+                <input name="brand" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Modelo
-                <input name="model" required className={inputClass()} />
+                <input name="model" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Versão
-                <input name="version" className={inputClass()} />
+                <input name="version" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Ano
-                <input name="year" inputMode="numeric" className={inputClass()} />
+                <input name="year" inputMode="numeric" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Quilometragem
-                <input name="mileage" inputMode="numeric" className={inputClass()} />
+                <input name="mileage" inputMode="numeric" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Placa
-                <input name="plate" className={inputClass()} />
+                <input name="plate" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Cor
-                <input name="color" className={inputClass()} />
+                <input name="color" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Valor pretendido
-                <input name="askingPrice" inputMode="decimal" className={inputClass()} />
+                <input name="askingPrice" inputMode="decimal" className={inputClass} />
               </label>
             </div>
 

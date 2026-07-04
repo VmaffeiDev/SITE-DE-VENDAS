@@ -64,7 +64,7 @@ function mapVehicle(record: {
     description: record.description ?? "",
     images: parseStringArray(record.images),
     features: parseStringArray(record.features),
-    featured: true,
+    featured: false,
     lastUpdate: record.createdAt.toISOString(),
     source: "consignment"
   };

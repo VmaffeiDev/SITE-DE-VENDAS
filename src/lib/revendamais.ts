@@ -146,7 +146,7 @@ function normalizeAd(ad: XmlRecord): Vehicle | null {
     title: normalizedTitle(ad),
     brand: titleCase(text(ad.MAKE)),
     model: titleCase(model),
-    version: titleCase(text(ad.MODEL)),
+    version: titleCase(text(ad.VERSION)),
     year:
       fabricationYear && modelYear
         ? `${fabricationYear}/${modelYear}`

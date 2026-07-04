@@ -9,7 +9,7 @@ type EmptyInventoryProps = {
 
 export function EmptyInventory({
   title = "Estoque indisponível no momento",
-  description = "Não conseguimos carregar os veículos agora. Pode ser instabilidade no XML do Revenda Mais ou uma atualização em andamento."
+  description = "Nosso estoque está sendo atualizado. Por favor, volte em breve ou fale diretamente com a loja pelo WhatsApp."
 }: EmptyInventoryProps) {
   return (
     <div className="rounded border border-line bg-white p-8 text-center shadow-sm">

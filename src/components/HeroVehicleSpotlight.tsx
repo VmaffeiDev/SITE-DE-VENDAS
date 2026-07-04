@@ -24,6 +24,7 @@ const rotationDelay = 6000;
 
 export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [tick, setTick] = useState(0);
 
   useEffect(() => {
     if (vehicles.length <= 1) {
@@ -35,7 +36,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
     }, rotationDelay);
 
     return () => window.clearInterval(timer);
-  }, [vehicles.length]);
+  }, [vehicles.length, tick]);
 
   if (!vehicles.length) {
     return null;
@@ -45,12 +46,14 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
   const image = activeVehicle.images[0];
 
   const goToPrevious = () => {
+    setTick((t) => t + 1);
     setActiveIndex((current) =>
       current === 0 ? vehicles.length - 1 : current - 1
     );
   };
 
   const goToNext = () => {
+    setTick((t) => t + 1);
     setActiveIndex((current) => (current + 1) % vehicles.length);
   };
 
@@ -68,7 +71,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
               alt={activeVehicle.title}
               fill
               priority
-              unoptimized
+              unoptimized={image.startsWith("/uploads/")}
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="object-contain"
             />
@@ -154,7 +157,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
               key={`${vehicle.source}-${vehicle.id}`}
               type="button"
               aria-label={`Mostrar destaque ${index + 1}`}
-              onClick={() => setActiveIndex(index)}
+              onClick={() => { setTick((t) => t + 1); setActiveIndex(index); }}
               className={`h-1.5 flex-1 rounded-full transition ${
                 index === activeIndex ? "bg-ink" : "bg-line hover:bg-graphite/30"
               }`}

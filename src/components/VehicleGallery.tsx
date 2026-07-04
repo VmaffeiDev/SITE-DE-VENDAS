@@ -9,6 +9,10 @@ type VehicleGalleryProps = {
   title: string;
 };
 
+function isLocalUpload(src: string) {
+  return src.startsWith("/uploads/");
+}
+
 export function VehicleGallery({ images, title }: VehicleGalleryProps) {
   const galleryImages = useMemo(
     () => images.filter((image) => Boolean(image)),
@@ -37,8 +41,18 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
     );
   }
 
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (e.key === "ArrowLeft") showPrevious();
+    if (e.key === "ArrowRight") showNext();
+  }
+
   return (
-    <div className="min-w-0 space-y-4" aria-label={`Galeria de fotos: ${title}`}>
+    <div
+      className="min-w-0 space-y-4"
+      aria-label={`Galeria de fotos: ${title}`}
+      onKeyDown={hasMultipleImages ? handleKeyDown : undefined}
+      tabIndex={hasMultipleImages ? 0 : undefined}
+    >
       <div className="relative overflow-hidden rounded-lg border border-line bg-white shadow-sm">
         <div className="relative aspect-[4/3] bg-white">
           {activeImage ? (
@@ -48,7 +62,7 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
               alt={`${title} foto ${activeIndex + 1}`}
               fill
               priority
-              unoptimized
+              unoptimized={isLocalUpload(activeImage)}
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="object-contain"
             />
@@ -110,7 +124,7 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
                   src={image}
                   alt={`${title} miniatura ${index + 1}`}
                   fill
-                  unoptimized
+                  unoptimized={isLocalUpload(image)}
                   sizes="112px"
                   className="object-cover"
                 />

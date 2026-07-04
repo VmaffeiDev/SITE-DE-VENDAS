@@ -1,5 +1,8 @@
+"use client";
+
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import { BrandMark } from "@/components/BrandMark";
 import { getWhatsAppLink } from "@/lib/contact";
@@ -11,6 +14,8 @@ const navItems = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
+
   return (
     <header className="sticky top-0 z-40 border-b border-line bg-white/92 shadow-sm backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
@@ -18,16 +23,20 @@ export function Header() {
           <BrandMark className="max-w-[calc(100vw-6.5rem)] sm:max-w-none" />
         </Link>
 
-        <nav className="hidden items-center rounded-lg border border-line bg-mist/70 p-1 text-sm font-bold text-graphite md:flex">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded px-4 py-2 transition hover:bg-white hover:text-ink hover:shadow-sm"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav aria-label="Navegação principal" className="hidden items-center rounded-lg border border-line bg-mist/70 p-1 text-sm font-bold text-graphite md:flex">
+          {navItems.map((item) => {
+            const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={`rounded px-4 py-2 transition hover:bg-white hover:text-ink hover:shadow-sm ${isActive ? "bg-white text-ink shadow-sm" : ""}`}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <a
@@ -43,16 +52,20 @@ export function Header() {
         </a>
       </div>
 
-      <nav className="flex gap-1 overflow-x-auto border-t border-line px-4 py-2 text-sm font-bold text-graphite md:hidden">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="rounded px-3 py-2 transition hover:bg-mist hover:text-ink"
-          >
-            {item.label}
-          </Link>
-        ))}
+      <nav aria-label="Navegação mobile" className="flex gap-1 overflow-x-auto border-t border-line px-4 py-2 text-sm font-bold text-graphite md:hidden">
+        {navItems.map((item) => {
+          const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              className={`rounded px-3 py-2 transition hover:bg-mist hover:text-ink ${isActive ? "bg-mist text-ink" : ""}`}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
       </nav>
       <div
         className="h-1 bg-[linear-gradient(90deg,#009c3b_0%,#009c3b_42%,#ffdf00_42%,#ffdf00_58%,#002776_58%,#002776_100%)]"

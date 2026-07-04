@@ -36,17 +36,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
+  const ogImage = vehicle.images[0]
+    ? vehicle.images[0].startsWith("/")
+      ? { url: vehicle.images[0], width: 1200, height: 900 }
+      : vehicle.images[0]
+    : undefined;
+
   return {
     title: `${vehicle.title} à venda | VMAFFEI Motors`,
     description:
       vehicle.description ||
       `${vehicle.title} com fotos, ficha técnica e atendimento direto pela VMAFFEI Motors.`,
+    alternates: {
+      canonical: `/veiculo/${id}`
+    },
     openGraph: {
       title: `${vehicle.title} à venda | VMAFFEI Motors`,
       description:
         vehicle.description ||
         `${formatYear(vehicle.year)} · ${formatMileage(vehicle.mileage)} · ${formatCurrency(vehicle.price)}`,
-      images: vehicle.images[0] ? [vehicle.images[0]] : []
+      images: ogImage ? [ogImage] : []
     }
   };
 }
@@ -73,10 +82,26 @@ export default async function VehiclePage({ params }: PageProps) {
   ];
 
   const trustItems = [
-    { label: "Fotos reais", value: `${vehicle.images.length || 1} imagem(ns)`, icon: Camera },
+    {
+      label: "Fotos reais",
+      value: vehicle.images.length ? `${vehicle.images.length} foto${vehicle.images.length !== 1 ? "s" : ""}` : "Fotos não disponíveis",
+      icon: Camera
+    },
     { label: "Atendimento direto", value: "WhatsApp da loja", icon: MessageCircle },
     { label: "Compra orientada", value: "Documentação e entrega", icon: FileCheck2 }
   ];
+
+  const baseUrl = "https://consultordevendasvictormaffei.com";
+
+  const breadcrumbLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Início", item: baseUrl },
+      { "@type": "ListItem", position: 2, name: "Estoque", item: `${baseUrl}/estoque` },
+      { "@type": "ListItem", position: 3, name: vehicle.title, item: `${baseUrl}/veiculo/${vehicle.id}` }
+    ]
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -84,7 +109,7 @@ export default async function VehiclePage({ params }: PageProps) {
     name: vehicle.title,
     brand: vehicle.brand,
     model: vehicle.model,
-    vehicleModelDate: vehicle.year,
+    vehicleModelDate: vehicle.modelYear ?? undefined,
     mileageFromOdometer: vehicle.mileage
       ? {
           "@type": "QuantitativeValue",
@@ -110,6 +135,10 @@ export default async function VehiclePage({ params }: PageProps) {
 
   return (
     <section className="bg-mist pb-24 pt-8 sm:pb-12 sm:pt-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
