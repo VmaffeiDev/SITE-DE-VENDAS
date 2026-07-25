@@ -16,9 +16,10 @@ import {
 } from "lucide-react";
 
 import { formatCurrency, formatLabel, formatMileage, formatYear } from "@/lib/format";
-import { getInventoryVehicleById } from "@/lib/inventory";
+import { getInventoryVehicleById, getInventoryVehicles } from "@/lib/inventory";
 import { getWhatsAppLink } from "@/lib/contact";
 import { VehicleGallery } from "@/components/VehicleGallery";
+import { VehicleGrid } from "@/components/VehicleGrid";
 
 export const revalidate = 300;
 
@@ -62,11 +63,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function VehiclePage({ params }: PageProps) {
   const { id } = await params;
-  const vehicle = await getInventoryVehicleById(id);
+  const [vehicle, allVehicles] = await Promise.all([
+    getInventoryVehicleById(id),
+    getInventoryVehicles()
+  ]);
 
   if (!vehicle) {
     notFound();
   }
+
+  const relatedVehicles = allVehicles
+    .filter((v) => v.id !== vehicle.id && v.brand === vehicle.brand)
+    .slice(0, 4);
 
   const interestMessage = `Olá, tenho interesse no veículo ${vehicle.title} (${vehicle.id}).`;
   const testDriveMessage = `Olá, quero agendar um test drive do veículo ${vehicle.title}.`;
@@ -134,7 +142,7 @@ export default async function VehiclePage({ params }: PageProps) {
   };
 
   return (
-    <section className="bg-mist pb-24 pt-8 sm:pb-12 sm:pt-12">
+    <section className="bg-mist pb-20 pt-8 sm:pb-12 sm:pt-12">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
@@ -287,6 +295,15 @@ export default async function VehiclePage({ params }: PageProps) {
           </div>
         </section>
       </div>
+
+      {relatedVehicles.length > 0 ? (
+        <div className="mx-auto mt-8 max-w-7xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-5 text-2xl font-black text-ink">
+            Mais veículos {vehicle.brand}
+          </h2>
+          <VehicleGrid vehicles={relatedVehicles} />
+        </div>
+      ) : null}
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 p-3 shadow-premium backdrop-blur sm:hidden">
         <a

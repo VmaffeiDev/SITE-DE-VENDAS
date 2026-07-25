@@ -34,6 +34,14 @@ const statusLabels: Record<ConsignmentStatus, string> = {
   vendido: "Vendido"
 };
 
+const statusBadgeClass: Record<ConsignmentStatus, string> = {
+  pendente_avaliacao: "bg-amber-50 text-amber-800 border border-amber-200",
+  aprovado: "bg-green-50 text-green-800 border border-green-200",
+  recusado: "bg-red-50 text-red-800 border border-red-200",
+  anunciado: "bg-blue-50 text-blue-800 border border-blue-200",
+  vendido: "bg-mist text-graphite border border-line"
+};
+
 function parseImages(value: string): ConsignmentImage[] {
   try {
     const parsed = JSON.parse(value);
@@ -114,7 +122,7 @@ export default async function AdminConsignadosPage() {
                           {lead.phone} · {lead.email} · {lead.city}
                         </p>
                       </div>
-                      <span className="h-fit rounded bg-mist px-3 py-2 text-xs font-black uppercase tracking-[0.14em] text-graphite">
+                      <span className={`h-fit rounded px-3 py-2 text-xs font-black uppercase tracking-[0.14em] ${statusBadgeClass[status]}`}>
                         {statusLabels[status]}
                       </span>
                     </div>
@@ -234,21 +242,23 @@ export default async function AdminConsignadosPage() {
                       Fotos
                     </p>
                     {images.length ? (
-                      <div className="grid grid-cols-2 gap-3">
-                        {images.slice(0, 6).map((image) => (
-                          <div
-                            key={image.src}
-                            className="relative aspect-[4/3] overflow-hidden rounded border border-line bg-mist"
-                          >
-                            <Image
-                              src={image.src}
-                              alt={image.label}
-                              fill
-                              sizes="160px"
-                              className="object-cover"
-                            />
-                          </div>
-                        ))}
+                      <div className="max-h-96 overflow-y-auto">
+                        <div className="grid grid-cols-2 gap-3">
+                          {images.map((image) => (
+                            <div
+                              key={image.src}
+                              className="relative aspect-[4/3] overflow-hidden rounded border border-line bg-mist"
+                            >
+                              <Image
+                                src={image.src}
+                                alt={image.label}
+                                fill
+                                sizes="160px"
+                                className="object-cover"
+                              />
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     ) : (
                       <div className="rounded border border-dashed border-gray-300 bg-mist p-6 text-center text-sm text-graphite">

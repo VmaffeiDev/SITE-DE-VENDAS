@@ -15,10 +15,10 @@ export async function getInventoryVehicles(): Promise<Vehicle[]> {
 }
 
 export async function getInventoryVehicleById(id: string) {
-  const revendaVehicle = await getRevendaVehicleById(id);
-  if (revendaVehicle) {
-    return revendaVehicle;
+  const localVehicle = await getLocalVehicleById(id);
+  if (localVehicle) {
+    return localVehicle;
   }
 
-  return getLocalVehicleById(id);
+  return getRevendaVehicleById(id);
 }

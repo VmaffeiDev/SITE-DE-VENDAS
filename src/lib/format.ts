@@ -56,5 +56,5 @@ export function parseFlexibleNumber(value: FormDataEntryValue | string | null) {
 export function titleCase(value: string) {
   return value
     .toLocaleLowerCase("pt-BR")
-    .replace(/(^|\s|-)([a-zà-ÿ0-9])/g, (match) => match.toLocaleUpperCase("pt-BR"));
+    .replace(/(^|\s|-)([a-zÀ-ÖØ-öø-ÿ0-9])/g, (match) => match.toLocaleUpperCase("pt-BR"));
 }

@@ -4,6 +4,7 @@ import {
   Camera,
   CarFront,
   CheckCircle2,
+  ChevronDown,
   ClipboardCheck,
   FileText,
   Handshake,
@@ -210,13 +211,13 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
                 Dados para avaliação
               </h2>
               {sent ? (
-                <p className="mt-4 rounded border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-800">
+                <p role="alert" className="mt-4 rounded border border-green-200 bg-green-50 px-4 py-3 text-sm font-semibold text-green-800">
                   Recebemos seu cadastro. A loja entrará em contato para seguir
                   com a avaliação.
                 </p>
               ) : null}
               {error ? (
-                <p className="mt-4 rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
+                <p role="alert" className="mt-4 rounded border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-800">
                   Não foi possível enviar agora. Confira os campos obrigatórios e
                   tente novamente.
                 </p>
@@ -230,7 +231,7 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Telefone
-                <input name="phone" required className={inputClass} />
+                <input name="phone" type="tel" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
                 Email
@@ -324,8 +325,12 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
           <div className="mt-6 divide-y divide-line rounded border border-line bg-white">
             {faq.map((item) => (
               <details key={item.question} className="group p-5">
-                <summary className="cursor-pointer list-none text-lg font-black text-ink">
+                <summary className="flex cursor-pointer list-none items-center justify-between text-lg font-black text-ink">
                   {item.question}
+                  <ChevronDown
+                    size={18}
+                    className="shrink-0 text-graphite transition group-open:rotate-180"
+                  />
                 </summary>
                 <p className="mt-3 leading-7 text-graphite">{item.answer}</p>
               </details>

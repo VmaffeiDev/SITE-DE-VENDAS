@@ -3,7 +3,8 @@ import { XMLParser } from "fast-xml-parser";
 import { titleCase } from "@/lib/format";
 import type { Vehicle } from "@/types/vehicle";
 
-export const REVENDAMAIS_XML_URL =
+const REVENDAMAIS_XML_URL =
+  process.env.REVENDAMAIS_XML_URL ??
   "http://app.revendamais.com.br/application/index.php/apiGeneratorXml/generator/sitedaloja/4e24bb8b9bfec5a702ee95ca0d7b84987561.xml";
 
 const REQUEST_TIMEOUT_MS = 15000;

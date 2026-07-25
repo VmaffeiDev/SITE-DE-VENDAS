@@ -165,7 +165,7 @@ export function GoogleReviews() {
                 <div className="mt-4">
                   <RatingStars />
                 </div>
-                <p className="mt-4 text-sm leading-6 text-white/78">{review.text}</p>
+                <p className="mt-4 text-sm leading-6 text-white/75">{review.text}</p>
               </article>
             ))}
           </div>

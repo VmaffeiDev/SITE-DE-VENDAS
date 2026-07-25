@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+function constantTimeEqual(a: string, b: string): boolean {
+  const ea = new TextEncoder().encode(a);
+  const eb = new TextEncoder().encode(b);
+  if (ea.length !== eb.length) {
+    let result = 1;
+    for (let i = 0; i < Math.max(ea.length, eb.length); i++) {
+      result |= (ea[i] ?? 0) ^ (eb[i] ?? 0);
+    }
+    return false;
+  }
+  let result = 0;
+  for (let i = 0; i < ea.length; i++) {
+    result |= (ea[i] ?? 0) ^ (eb[i] ?? 0);
+  }
+  return result === 0;
+}
+
 function unauthorized() {
   return new NextResponse(null, {
     status: 401,
@@ -38,7 +55,9 @@ export function middleware(request: NextRequest) {
     const user = decoded.slice(0, colonIndex);
     const password = decoded.slice(colonIndex + 1);
 
-    if (user !== adminUser || password !== adminPassword) {
+    const userOk = constantTimeEqual(user, adminUser);
+    const passOk = constantTimeEqual(password, adminPassword);
+    if (!userOk || !passOk) {
       return unauthorized();
     }
   } catch {

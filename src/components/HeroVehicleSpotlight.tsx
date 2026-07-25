@@ -25,9 +25,10 @@ const rotationDelay = 6000;
 export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [tick, setTick] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    if (vehicles.length <= 1) {
+    if (vehicles.length <= 1 || isHovered) {
       return;
     }
 
@@ -36,7 +37,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
     }, rotationDelay);
 
     return () => window.clearInterval(timer);
-  }, [vehicles.length, tick]);
+  }, [vehicles.length, tick, isHovered]);
 
   if (!vehicles.length) {
     return null;
@@ -58,9 +59,11 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
   };
 
   return (
-    <aside
+    <section
       className="group mx-auto max-w-5xl overflow-hidden rounded-xl border border-white/70 bg-white text-white shadow-premium"
       aria-label="Veículo em destaque"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div className="lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-stretch">
         <div className="relative aspect-[4/3] overflow-hidden bg-white">
@@ -165,6 +168,6 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
           ))}
         </div>
       ) : null}
-    </aside>
+    </section>
   );
 }

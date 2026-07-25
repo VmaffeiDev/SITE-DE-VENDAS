@@ -84,6 +84,10 @@ export default async function Home() {
     .slice(0, 6);
   const heroVehicles = (featured.length ? featured : vehicles).slice(0, 5);
 
+  const now = new Date();
+  const showCupBanner =
+    now >= new Date("2026-05-15") && now <= new Date("2026-08-01");
+
   return (
     <>
       <section className="cup-home-bg relative overflow-hidden border-b border-line">
@@ -93,7 +97,7 @@ export default async function Home() {
           ) : (
             <EmptyInventory />
           )}
-          <CupSeasonBanner />
+          {showCupBanner ? <CupSeasonBanner /> : null}
         </div>
       </section>
 
