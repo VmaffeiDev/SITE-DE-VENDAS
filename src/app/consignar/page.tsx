@@ -13,7 +13,7 @@ import {
   ShieldCheck
 } from "lucide-react";
 
-import { UPLOAD_FIELDS } from "@/lib/upload-fields";
+import { ConsignarPhotoUpload } from "@/components/ConsignarPhotoUpload";
 import { getWhatsAppLink } from "@/lib/contact";
 import { single } from "@/lib/params";
 
@@ -290,23 +290,7 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
               <p className="mt-1 text-sm text-graphite">
                 Você pode enviar múltiplas imagens em cada campo.
               </p>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2">
-                {UPLOAD_FIELDS.map((field) => (
-                  <label
-                    key={field.name}
-                    className="grid gap-2 rounded border border-dashed border-gray-300 bg-mist p-4 text-sm font-bold text-ink"
-                  >
-                    {field.label}
-                    <input
-                      name={field.name}
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="border-0 bg-transparent p-0 text-sm"
-                    />
-                  </label>
-                ))}
-              </div>
+              <ConsignarPhotoUpload />
             </div>
 
             <button className="mt-8 w-full rounded bg-ink px-6 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-graphite sm:w-auto">

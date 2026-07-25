@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 
 import { BrandMark } from "@/components/BrandMark";
+import { MapEmbed } from "@/components/MapEmbed";
 import { getWhatsAppLink } from "@/lib/contact";
 
 const stores = [
@@ -104,31 +105,11 @@ export function Footer() {
             </div>
           </div>
 
-          <div className="relative min-h-[320px] overflow-hidden rounded-lg border border-white/10 bg-white/[0.06] shadow-premium">
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
-              <MapPin size={32} className="text-whatsapp" />
-              <p className="mt-3 text-sm font-black text-white">
-                Mapa da loja Auto Shopping Curitiba
-              </p>
-              <a
-                href={stores[0].mapsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="mt-3 inline-flex items-center gap-2 text-sm font-black text-whatsapp"
-              >
-                <Navigation size={16} />
-                Abrir no Google Maps
-              </a>
-            </div>
-            <iframe
-              title="Mapa da loja Auto Shopping Curitiba"
-              src={mapEmbedUrl}
-              className="relative z-10 h-full min-h-[320px] w-full border-0"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+          <MapEmbed
+            title="Mapa da loja Auto Shopping Curitiba"
+            embedUrl={mapEmbedUrl}
+            mapsUrl={stores[0].mapsUrl}
+          />
         </div>
       </div>
 

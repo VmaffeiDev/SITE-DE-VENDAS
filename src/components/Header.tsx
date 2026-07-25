@@ -41,7 +41,7 @@ export function Header() {
 
         <a
           href={getWhatsAppLink(
-            "Olá, quero falar com o consultor Victor Maffei da Squ4ttro Motors."
+            "Olá, quero falar com a VMAFFEI Motors."
           )}
           target="_blank"
           rel="noreferrer"

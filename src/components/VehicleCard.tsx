@@ -32,7 +32,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
           )}
           <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/45 to-transparent opacity-80" />
           <span className="absolute left-3 top-3 rounded bg-white px-3 py-1.5 text-xs font-black uppercase tracking-[0.14em] text-ink shadow-soft">
-            Disponível
+            {vehicle.source === "consignment" ? "Consignação" : "Disponível"}
           </span>
         </div>
 

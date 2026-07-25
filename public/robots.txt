@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://consultordevendasvictormaffei.com/sitemap.xml
