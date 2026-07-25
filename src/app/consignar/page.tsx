@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import { ConsignarPhotoUpload } from "@/components/ConsignarPhotoUpload";
+import { ConsignarSubmitButton } from "@/components/ConsignarSubmitButton";
 import { getWhatsAppLink } from "@/lib/contact";
 import { single } from "@/lib/params";
 
@@ -293,9 +294,7 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
               <ConsignarPhotoUpload />
             </div>
 
-            <button className="mt-8 w-full rounded bg-ink px-6 py-4 text-sm font-black uppercase tracking-[0.12em] text-white transition hover:bg-graphite sm:w-auto">
-              Enviar para avaliação
-            </button>
+            <ConsignarSubmitButton />
           </form>
         </div>
       </section>

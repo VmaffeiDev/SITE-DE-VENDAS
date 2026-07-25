@@ -24,10 +24,15 @@ async function setStatus(id: string, status: ConsignmentStatus): Promise<ActionR
     return { success: false, error: "id_invalido" };
   }
 
-  await prisma.consignmentLead.update({
-    where: { id },
-    data: { status }
-  });
+  try {
+    await prisma.consignmentLead.update({
+      where: { id },
+      data: { status }
+    });
+  } catch (error) {
+    console.error("Erro ao atualizar status do consignado:", error);
+    return { success: false, error: "db_error" };
+  }
 
   revalidatePath("/admin/consignados");
   revalidatePath("/estoque");
@@ -64,9 +69,13 @@ export async function convertConsignmentToVehicle(formData: FormData): Promise<v
     return;
   }
 
-  const lead = await prisma.consignmentLead.findUnique({
-    where: { id }
-  });
+  let lead;
+  try {
+    lead = await prisma.consignmentLead.findUnique({ where: { id } });
+  } catch (error) {
+    console.error("Erro ao buscar consignado para conversão:", error);
+    return;
+  }
 
   if (!lead) {
     return;
@@ -77,43 +86,52 @@ export async function convertConsignmentToVehicle(formData: FormData): Promise<v
     .filter(Boolean)
     .join(" ");
 
-  await prisma.vehicle.upsert({
-    where: { id: vehicleId },
-    create: {
-      id: vehicleId,
-      consignmentLeadId: lead.id,
-      title,
-      brand: lead.brand,
-      model: lead.model,
-      version: lead.version,
-      year: lead.year,
-      mileage: lead.mileage,
-      price: lead.askingPrice,
-      color: lead.color,
-      description: lead.notes,
-      images: lead.images,
-      features: JSON.stringify(["Consignação VMAFFEI Motors"]),
-      source: "consignment"
-    },
-    update: {
-      title,
-      brand: lead.brand,
-      model: lead.model,
-      version: lead.version,
-      year: lead.year,
-      mileage: lead.mileage,
-      price: lead.askingPrice,
-      color: lead.color,
-      description: lead.notes,
-      images: lead.images,
-      features: JSON.stringify(["Consignação VMAFFEI Motors"])
-    }
-  });
+  // images is already stored as a JSON string of ConsignmentImage[]; reuse as-is
+  // since local-inventory.parseStringArray extracts .src from each object
+  const featuresJson = JSON.stringify(["Consignação VMAFFEI Motors"]);
 
-  await prisma.consignmentLead.update({
-    where: { id },
-    data: { status: "anunciado" }
-  });
+  try {
+    await prisma.vehicle.upsert({
+      where: { id: vehicleId },
+      create: {
+        id: vehicleId,
+        consignmentLeadId: lead.id,
+        title,
+        brand: lead.brand,
+        model: lead.model,
+        version: lead.version,
+        year: lead.year,
+        mileage: lead.mileage,
+        price: lead.askingPrice,
+        color: lead.color,
+        description: lead.notes,
+        images: lead.images,
+        features: featuresJson,
+        source: "consignment"
+      },
+      update: {
+        title,
+        brand: lead.brand,
+        model: lead.model,
+        version: lead.version,
+        year: lead.year,
+        mileage: lead.mileage,
+        price: lead.askingPrice,
+        color: lead.color,
+        description: lead.notes,
+        images: lead.images,
+        features: featuresJson
+      }
+    });
+
+    await prisma.consignmentLead.update({
+      where: { id },
+      data: { status: "anunciado" }
+    });
+  } catch (error) {
+    console.error("Erro ao converter consignado em veículo:", error);
+    return;
+  }
 
   revalidatePath("/admin/consignados");
   revalidatePath("/estoque");

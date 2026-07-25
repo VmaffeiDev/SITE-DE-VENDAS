@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="animate-pulse">
+    <div className="animate-pulse" role="status" aria-label="Carregando página inicial">
       <div className="h-[420px] bg-gray-200 sm:h-[520px]" />
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="mb-6 h-8 w-48 rounded bg-gray-200" />
