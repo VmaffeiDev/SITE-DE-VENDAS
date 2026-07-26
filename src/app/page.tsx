@@ -13,7 +13,6 @@ import {
 import Link from "next/link";
 
 import { EmptyInventory } from "@/components/EmptyInventory";
-import { CupSeasonBanner } from "@/components/CupSeasonBanner";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { HeroVehicleSpotlight } from "@/components/HeroVehicleSpotlight";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -84,20 +83,15 @@ export default async function Home() {
     .slice(0, 6);
   const heroVehicles = (featured.length ? featured : vehicles).slice(0, 5);
 
-  const now = new Date();
-  const showCupBanner =
-    now >= new Date("2026-05-15") && now <= new Date("2026-08-01");
-
   return (
     <>
-      <section className="cup-home-bg relative overflow-hidden border-b border-line">
+      <section className="relative overflow-hidden border-b border-line bg-white">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
           {heroVehicles.length ? (
             <HeroVehicleSpotlight vehicles={heroVehicles} />
           ) : (
             <EmptyInventory />
           )}
-          {showCupBanner ? <CupSeasonBanner /> : null}
         </div>
       </section>
 

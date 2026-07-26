@@ -186,13 +186,6 @@ button:focus-visible,
   }
 }
 
-.cup-home-bg {
-  background:
-    radial-gradient(circle at 10% 0%, rgba(0, 156, 59, 0.2), transparent 34%),
-    radial-gradient(circle at 90% 0%, rgba(255, 223, 0, 0.24), transparent 32%),
-    linear-gradient(180deg, #ffffff 0%, #f7f8fa 54%, #eef0f3 100%);
-}
-
 .cup-logo-stage {
   position: relative;
   min-height: 286px;
