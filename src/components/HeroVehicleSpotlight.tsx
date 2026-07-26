@@ -90,7 +90,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
                 type="button"
                 onClick={goToPrevious}
                 aria-label="Veículo anterior"
-                className="flex h-10 w-10 items-center justify-center rounded bg-white/92 text-ink shadow-soft transition hover:bg-white"
+                className="flex h-11 w-11 items-center justify-center rounded bg-white/92 text-ink shadow-soft transition hover:bg-white"
               >
                 <ChevronLeft size={19} />
               </button>
@@ -98,7 +98,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
                 type="button"
                 onClick={goToNext}
                 aria-label="Próximo veículo"
-                className="flex h-10 w-10 items-center justify-center rounded bg-white/92 text-ink shadow-soft transition hover:bg-white"
+                className="flex h-11 w-11 items-center justify-center rounded bg-white/92 text-ink shadow-soft transition hover:bg-white"
               >
                 <ChevronRight size={19} />
               </button>
@@ -138,7 +138,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
               <p className="text-xs font-black uppercase tracking-[0.2em] text-graphite">
                 Valor anunciado
               </p>
-              <p className="mt-1 text-3xl font-black tracking-tight sm:text-4xl">
+              <p className="mt-1 tabular-nums text-3xl font-black tracking-tight sm:text-4xl">
                 {formatCurrency(activeVehicle.price)}
               </p>
             </div>

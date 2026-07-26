@@ -46,13 +46,13 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 text-sm text-graphite">
+          <div className="grid grid-cols-2 gap-3 tabular-nums text-sm text-graphite">
             <span className="inline-flex items-center gap-2">
-              <CalendarDays size={17} />
+              <CalendarDays size={17} aria-hidden />
               {formatYear(vehicle.year)}
             </span>
             <span className="inline-flex items-center gap-2">
-              <Gauge size={17} />
+              <Gauge size={17} aria-hidden />
               {formatMileage(vehicle.mileage)}
             </span>
           </div>
@@ -62,7 +62,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
               <p className="text-xs font-black uppercase tracking-[0.16em] text-graphite">
                 Preço
               </p>
-              <p className="mt-1 text-2xl font-black text-ink">
+              <p className="mt-1 tabular-nums text-2xl font-black text-ink">
                 {formatCurrency(vehicle.price)}
               </p>
             </div>

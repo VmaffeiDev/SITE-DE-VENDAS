@@ -82,7 +82,7 @@ export function GoogleReviews() {
 
           <div className="grid overflow-hidden rounded-xl border border-line bg-mist shadow-soft sm:grid-cols-3">
             <div className="border-b border-line p-5 sm:border-b-0 sm:border-r">
-              <p className="text-4xl font-black tracking-tight text-ink">5.0</p>
+              <p className="tabular-nums text-4xl font-black tracking-tight text-ink">5.0</p>
               <div className="mt-2">
                 <RatingStars />
               </div>
@@ -91,13 +91,13 @@ export function GoogleReviews() {
               </p>
             </div>
             <div className="border-b border-line p-5 sm:border-b-0 sm:border-r">
-              <p className="text-4xl font-black tracking-tight text-ink">11</p>
+              <p className="tabular-nums text-4xl font-black tracking-tight text-ink">11</p>
               <p className="mt-2 text-sm font-semibold text-graphite">
                 depoimentos reunidos
               </p>
             </div>
             <div className="p-5">
-              <p className="text-4xl font-black tracking-tight text-ink">100%</p>
+              <p className="tabular-nums text-4xl font-black tracking-tight text-ink">100%</p>
               <p className="mt-2 text-sm font-semibold text-graphite">
                 atendimento citado
               </p>
@@ -144,7 +144,12 @@ export function GoogleReviews() {
             </a>
           </div>
 
-          <div className="mt-4 flex snap-x gap-4 overflow-x-auto pb-2">
+          <div
+            className="mt-4 flex snap-x gap-4 overflow-x-auto pb-2"
+            role="region"
+            aria-label="Depoimentos — role para ver mais"
+            tabIndex={0}
+          >
             {reviews.map((review) => (
               <article
                 key={review.author}

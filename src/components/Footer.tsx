@@ -150,14 +150,14 @@ export function Footer() {
           </a>
         </div>
 
-        <div className="flex flex-col gap-3 text-sm text-white/75">
-          <Link href="/estoque" className="transition hover:text-white">
+        <nav aria-label="Navegação do rodapé" className="flex flex-col gap-1 text-sm text-white/75">
+          <Link href="/estoque" className="inline-flex items-center rounded py-2 transition hover:text-white">
             Ver estoque
           </Link>
-          <Link href="/consignar" className="transition hover:text-white">
+          <Link href="/consignar" className="inline-flex items-center rounded py-2 transition hover:text-white">
             Consignar meu veículo
           </Link>
-        </div>
+        </nav>
       </div>
     </footer>
   );

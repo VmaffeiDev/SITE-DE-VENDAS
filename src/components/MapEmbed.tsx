@@ -29,7 +29,7 @@ export function MapEmbed({ title, embedUrl, mapsUrl }: MapEmbedProps) {
           <button
             type="button"
             onClick={() => setLoaded(true)}
-            className="rounded bg-white/10 px-4 py-2 text-sm font-bold text-white transition hover:bg-white/20"
+            className="inline-flex h-11 items-center justify-center rounded bg-white/10 px-5 text-sm font-bold text-white transition hover:bg-white/20"
           >
             Carregar mapa
           </button>
