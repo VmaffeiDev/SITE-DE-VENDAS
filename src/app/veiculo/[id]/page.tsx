@@ -15,6 +15,8 @@ import {
   Tag
 } from "lucide-react";
 
+import Link from "next/link";
+
 import { formatCurrency, formatLabel, formatMileage, formatYear } from "@/lib/format";
 import { getInventoryVehicleById, getInventoryVehicles } from "@/lib/inventory";
 import { getWhatsAppLink } from "@/lib/contact";
@@ -152,6 +154,13 @@ export default async function VehiclePage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <nav aria-label="Caminho" className="mb-5 flex items-center gap-2 text-sm text-graphite">
+          <Link href="/" className="hover:text-ink">Início</Link>
+          <span aria-hidden>/</span>
+          <Link href="/estoque" className="hover:text-ink">Estoque</Link>
+          <span aria-hidden>/</span>
+          <span className="line-clamp-1 text-ink font-semibold">{vehicle.title}</span>
+        </nav>
         <div className="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)]">
           <VehicleGallery images={vehicle.images} title={vehicle.title} />
 

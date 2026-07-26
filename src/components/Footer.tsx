@@ -61,9 +61,9 @@ export function Footer() {
                 className="h-12 border-0 pl-12 pr-4"
               />
             </label>
-            <button className="inline-flex h-12 items-center justify-center gap-2 rounded bg-ink px-6 text-sm font-black text-white transition hover:bg-graphite">
+            <button type="submit" className="inline-flex h-12 items-center justify-center gap-2 rounded bg-ink px-6 text-sm font-black text-white transition hover:bg-graphite">
               Buscar
-              <ArrowRight size={18} />
+              <ArrowRight size={18} aria-hidden />
             </button>
           </form>
         </div>

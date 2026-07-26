@@ -66,7 +66,7 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
                 {formatCurrency(vehicle.price)}
               </p>
             </div>
-            <span className="inline-flex h-10 w-10 items-center justify-center rounded bg-mist text-ink transition group-hover:bg-ink group-hover:text-white">
+            <span aria-hidden className="inline-flex h-10 w-10 items-center justify-center rounded bg-mist text-ink transition group-hover:bg-ink group-hover:text-white">
               <ArrowRight size={18} />
             </span>
           </div>

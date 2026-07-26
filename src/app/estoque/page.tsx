@@ -193,7 +193,7 @@ export default async function EstoquePage({ searchParams }: PageProps) {
               <>
                 <div className="mb-5 grid gap-3 rounded-lg border border-line bg-white p-4 text-sm text-graphite shadow-sm sm:grid-cols-[1fr_auto] sm:items-center">
                   <div>
-                    <p className="font-black text-ink">
+                    <p className="font-black text-ink" aria-live="polite" aria-atomic="true">
                       {filteredVehicles.length} de {vehicles.length} veículo(s) encontrado(s)
                     </p>
                     <p className="mt-1">

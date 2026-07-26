@@ -154,17 +154,20 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
       </div>
 
       {vehicles.length > 1 ? (
-        <div className="flex items-center gap-2 border-t border-line bg-white px-5 py-4 sm:px-7">
+        <div className="flex items-center gap-2 border-t border-line bg-white px-5 py-3 sm:px-7" role="group" aria-label="Navegação de destaques">
           {vehicles.map((vehicle, index) => (
             <button
               key={`${vehicle.source}-${vehicle.id}`}
               type="button"
-              aria-label={`Mostrar destaque ${index + 1}`}
+              aria-label={`Destaque ${index + 1}: ${vehicle.title}`}
+              aria-pressed={index === activeIndex}
               onClick={() => { setTick((t) => t + 1); setActiveIndex(index); }}
-              className={`h-1.5 flex-1 rounded-full transition ${
-                index === activeIndex ? "bg-ink" : "bg-line hover:bg-graphite/30"
-              }`}
-            />
+              className="group flex-1 py-2"
+            >
+              <span className={`block h-1.5 rounded-full transition ${
+                index === activeIndex ? "bg-ink" : "bg-line group-hover:bg-graphite/30"
+              }`} />
+            </button>
           ))}
         </div>
       ) : null}

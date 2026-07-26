@@ -45,10 +45,11 @@ export function Header() {
           )}
           target="_blank"
           rel="noreferrer"
+          aria-label="Falar no WhatsApp"
           className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-whatsapp px-0 text-sm font-extrabold text-white shadow-soft transition hover:-translate-y-0.5 hover:brightness-95 sm:w-auto sm:px-4"
         >
-          <MessageCircle size={18} />
-          <span className="hidden sm:inline">WhatsApp</span>
+          <MessageCircle size={18} aria-hidden />
+          <span className="hidden sm:inline" aria-hidden>WhatsApp</span>
         </a>
       </div>
 

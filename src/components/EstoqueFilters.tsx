@@ -238,7 +238,7 @@ export function EstoqueFilters({
         </button>
         <a
           href="/estoque"
-          className="text-center text-sm font-bold text-graphite transition hover:text-ink"
+          className="inline-flex items-center justify-center rounded px-5 py-3 text-center text-sm font-bold text-graphite transition hover:bg-mist hover:text-ink"
         >
           Limpar filtros
         </a>

@@ -225,29 +225,33 @@ export default async function ConsignarPage({ searchParams }: PageProps) {
               ) : null}
             </div>
 
+            <p className="mb-1 text-xs text-graphite">
+              Campos marcados com <span aria-hidden className="text-red-600">*</span> são obrigatórios.
+            </p>
+
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="grid gap-2 text-sm font-bold text-ink">
-                Nome completo
-                <input name="name" required className={inputClass} />
+                <span>Nome completo <span aria-hidden className="text-red-600">*</span></span>
+                <input name="name" required autoComplete="name" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
-                Telefone
-                <input name="phone" type="tel" required className={inputClass} />
+                <span>Telefone <span aria-hidden className="text-red-600">*</span></span>
+                <input name="phone" type="tel" required autoComplete="tel" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
-                Email
-                <input name="email" type="email" required className={inputClass} />
+                <span>Email <span aria-hidden className="text-red-600">*</span></span>
+                <input name="email" type="email" required autoComplete="email" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
-                Cidade
-                <input name="city" required className={inputClass} />
+                <span>Cidade <span aria-hidden className="text-red-600">*</span></span>
+                <input name="city" required autoComplete="address-level2" className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
-                Marca do veículo
+                <span>Marca do veículo <span aria-hidden className="text-red-600">*</span></span>
                 <input name="brand" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
-                Modelo
+                <span>Modelo <span aria-hidden className="text-red-600">*</span></span>
                 <input name="model" required className={inputClass} />
               </label>
               <label className="grid gap-2 text-sm font-bold text-ink">
