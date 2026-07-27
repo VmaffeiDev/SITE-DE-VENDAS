@@ -32,32 +32,32 @@ export const metadata: Metadata = {
 };
 
 const benefits = [
-  "Avaliação profissional do veículo",
-  "Divulgação no site e redes sociais",
-  "Atendimento aos interessados feito pela loja",
-  "Intermediação segura",
-  "Mais visibilidade para vender mais rápido",
-  "Suporte completo até a transferência"
+  "🔎 Avaliação profissional do veículo",
+  "📱 Divulgação no site e redes sociais",
+  "👥 Atendimento aos interessados feito pela loja",
+  "🔒 Intermediação segura",
+  "🚀 Mais visibilidade para vender mais rápido",
+  "📄 Suporte completo até a transferência"
 ];
 
 const steps = [
   {
-    title: "Envie os dados",
+    title: "📋 Envie os dados",
     description: "Preencha as informações e anexe fotos reais do veículo.",
     icon: ClipboardCheck
   },
   {
-    title: "Avaliação da loja",
+    title: "🔍 Avaliação da loja",
     description: "A equipe analisa condição, mercado e estratégia de venda.",
     icon: CarFront
   },
   {
-    title: "Divulgação ativa",
+    title: "📣 Divulgação ativa",
     description: "O carro pode entrar no site, redes sociais e atendimento da loja.",
     icon: Megaphone
   },
   {
-    title: "Venda acompanhada",
+    title: "🤝 Venda acompanhada",
     description: "Negociação e documentação recebem suporte até a transferência.",
     icon: ShieldCheck
   }

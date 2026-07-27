@@ -4,8 +4,8 @@ export default function NotFound() {
   return (
     <section className="bg-mist py-20">
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
-        <p className="text-xs font-black uppercase tracking-[0.24em] text-graphite">Erro 404</p>
-        <h1 className="mt-3 text-4xl font-black text-ink">Página não encontrada</h1>
+        <p className="text-xs font-black uppercase tracking-[0.24em] text-graphite">🔍 Erro 404</p>
+        <h1 className="mt-3 text-4xl font-black text-ink">😕 Página não encontrada</h1>
         <p className="mx-auto mt-4 max-w-md leading-7 text-graphite">
           O veículo ou endereço solicitado não está disponível. Confira o estoque atualizado da loja.
         </p>

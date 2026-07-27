@@ -7,8 +7,7 @@ import {
   FileCheck2,
   Handshake,
   MessageCircle,
-  ShieldCheck,
-  Sparkles
+  ShieldCheck
 } from "lucide-react";
 import Link from "next/link";
 
@@ -30,26 +29,26 @@ export const metadata: Metadata = {
 
 const quickActions = [
   {
-    title: "Ver estoque",
+    title: "🚗 Ver estoque",
     description: "Compare modelos, anos, quilometragem e valores disponíveis.",
     href: "/estoque",
     icon: CarFront
   },
   {
-    title: "Simular financiamento",
+    title: "💰 Simular financiamento",
     description: "Receba atendimento para entender entrada e parcelas.",
     href: getWhatsAppLink("Olá, quero simular financiamento de um veículo."),
     external: true,
     icon: Banknote
   },
   {
-    title: "Consignar meu carro",
+    title: "🤝 Consignar meu carro",
     description: "Venda com a estrutura da loja cuidando da negociação.",
     href: "/consignar",
     icon: Handshake
   },
   {
-    title: "Falar com consultor",
+    title: "💬 Falar com consultor",
     description: "Tire dúvidas e receba indicação conforme seu perfil.",
     href: getWhatsAppLink("Olá, quero ajuda para escolher um veículo."),
     external: true,
@@ -59,17 +58,17 @@ const quickActions = [
 
 const trustItems = [
   {
-    title: "Procedência conferida",
+    title: "🛡️ Procedência conferida",
     description: "Anúncios com dados técnicos, fotos reais e atendimento direto.",
     icon: ShieldCheck
   },
   {
-    title: "Negociação acompanhada",
+    title: "✅ Negociação acompanhada",
     description: "A loja orienta do primeiro contato até a entrega do veículo.",
     icon: BadgeCheck
   },
   {
-    title: "Documentação orientada",
+    title: "📋 Documentação orientada",
     description: "Suporte para deixar compra, venda ou consignação mais simples.",
     icon: FileCheck2
   }
@@ -146,7 +145,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <SectionHeader
-              eyebrow="Veículos em destaque"
+              eyebrow="⭐ Veículos em destaque"
               title="Selecionados para você"
               description="Os principais anúncios publicados no estoque da loja."
             />
@@ -171,8 +170,7 @@ export default async function Home() {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
           <div>
             <p className="inline-flex items-center gap-2 rounded bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-[0.24em] text-white/70">
-              <Sparkles size={15} />
-              Compra com confiança
+              ✨ Compra com confiança
             </p>
             <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
               Atendimento premium, conversa simples e negociação transparente.
@@ -204,7 +202,7 @@ export default async function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <SectionHeader
-              eyebrow="Últimos adicionados"
+              eyebrow="🆕 Últimos adicionados"
               title="Novidades no estoque"
             />
             <Link
