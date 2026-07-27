@@ -15,7 +15,7 @@ import {
   markConsignmentSold,
   refuseConsignment,
   updateConsignmentStatus
-} from "@/app/admin/consignados/actions";
+} from "@/app/(site)/admin/consignados/actions";
 import { formatCurrency, formatMileage } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
 import {

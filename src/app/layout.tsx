@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { NativeBridge } from "@/components/NativeBridge";
-import { WhatsAppFloatingButton } from "@/components/WhatsAppFloatingButton";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -62,10 +59,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }}
         />
         <NativeBridge />
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer />
-        <WhatsAppFloatingButton />
+        {children}
       </body>
     </html>
   );
