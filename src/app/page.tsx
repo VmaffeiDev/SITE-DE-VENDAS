@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+import { AnimateIn } from "@/components/AnimateIn";
 import { EmptyInventory } from "@/components/EmptyInventory";
 import { GoogleReviews } from "@/components/GoogleReviews";
 import { HeroVehicleSpotlight } from "@/components/HeroVehicleSpotlight";
@@ -96,7 +97,7 @@ export default async function Home() {
 
       <section className="border-b border-line bg-white py-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <AnimateIn className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {quickActions.map((action) => {
               const Icon = action.icon;
               const content = (
@@ -137,13 +138,13 @@ export default async function Home() {
                 </Link>
               );
             })}
-          </div>
+          </AnimateIn>
         </div>
       </section>
 
       <section className="bg-mist py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <AnimateIn className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <SectionHeader
               eyebrow="⭐ Veículos em destaque"
               title="Selecionados para você"
@@ -156,7 +157,7 @@ export default async function Home() {
               Ver todos
               <ArrowRight size={18} />
             </Link>
-          </div>
+          </AnimateIn>
 
           {featured.length ? (
             <VehicleGrid vehicles={featured} />
@@ -168,7 +169,7 @@ export default async function Home() {
 
       <section className="border-y border-line bg-ink py-12 text-white sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
-          <div>
+          <AnimateIn>
             <p className="inline-flex items-center gap-2 rounded bg-white/10 px-3 py-2 text-xs font-black uppercase tracking-[0.24em] text-white/70">
               ✨ Compra com confiança
             </p>
@@ -179,17 +180,19 @@ export default async function Home() {
               A VMAFFEI Motors atende quem já sabe o que quer e também quem precisa
               de ajuda para escolher, financiar, trocar ou consignar o veículo.
             </p>
-          </div>
+          </AnimateIn>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            {trustItems.map((item) => {
+            {trustItems.map((item, index) => {
               const Icon = item.icon;
               return (
-                <div key={item.title} className="rounded-lg border border-white/10 bg-white/[0.06] p-5">
-                  <Icon size={24} className="text-white" />
-                  <h3 className="mt-4 font-black">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/70">{item.description}</p>
-                </div>
+                <AnimateIn key={item.title} delay={index * 80}>
+                  <div className="rounded-lg border border-white/10 bg-white/[0.06] p-5">
+                    <Icon size={24} className="text-white" />
+                    <h3 className="mt-4 font-black">{item.title}</h3>
+                    <p className="mt-2 text-sm leading-6 text-white/70">{item.description}</p>
+                  </div>
+                </AnimateIn>
               );
             })}
           </div>
@@ -200,7 +203,7 @@ export default async function Home() {
 
       <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <AnimateIn className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
             <SectionHeader
               eyebrow="🆕 Últimos adicionados"
               title="Novidades no estoque"
@@ -212,7 +215,7 @@ export default async function Home() {
               Explorar estoque
               <ArrowRight size={18} />
             </Link>
-          </div>
+          </AnimateIn>
 
           {latest.length ? <VehicleGrid vehicles={latest} /> : <EmptyInventory />}
         </div>
