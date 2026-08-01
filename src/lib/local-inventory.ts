@@ -1,5 +1,12 @@
+import { normalizeImageUrl } from "@/lib/images";
 import { prisma } from "@/lib/prisma";
 import type { Vehicle } from "@/types/vehicle";
+
+function parseImageArray(value: string | null | undefined) {
+  return parseStringArray(value)
+    .map((image) => normalizeImageUrl(image))
+    .filter((image): image is string => Boolean(image));
+}
 
 function parseStringArray(value: string | null | undefined) {
   if (!value) {
@@ -62,7 +69,7 @@ function mapVehicle(record: {
     transmission: record.transmission ?? "",
     color: record.color ?? "",
     description: record.description ?? "",
-    images: parseStringArray(record.images),
+    images: parseImageArray(record.images),
     features: parseStringArray(record.features),
     featured: true,
     lastUpdate: record.createdAt.toISOString(),

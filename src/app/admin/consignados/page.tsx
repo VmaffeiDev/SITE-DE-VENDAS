@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import {
   BadgeDollarSign,
@@ -16,6 +15,7 @@ import {
   refuseConsignment,
   updateConsignmentStatus
 } from "@/app/admin/consignados/actions";
+import { VehicleImage } from "@/components/VehicleImage";
 import { formatCurrency, formatMileage } from "@/lib/format";
 import { prisma } from "@/lib/prisma";
 import {
@@ -240,7 +240,7 @@ export default async function AdminConsignadosPage() {
                             key={image.src}
                             className="relative aspect-[4/3] overflow-hidden rounded border border-line bg-mist"
                           >
-                            <Image
+                            <VehicleImage
                               src={image.src}
                               alt={image.label}
                               fill

@@ -1,6 +1,7 @@
 import { XMLParser } from "fast-xml-parser";
 
 import { titleCase } from "@/lib/format";
+import { collectImageUrls, mergeImageLists } from "@/lib/images";
 import type { Vehicle } from "@/types/vehicle";
 
 export const REVENDAMAIS_XML_URL =
@@ -79,40 +80,26 @@ function splitAccessories(value: unknown) {
     .filter(Boolean);
 }
 
-function imageQualityRank(image: string) {
-  if (/_O_/i.test(image)) {
-    return 0;
-  }
-
-  if (/_W_/i.test(image)) {
-    return 1;
-  }
-
-  return 2;
-}
-
-function canonicalImageKey(image: string) {
-  return image.replace(/_W_/gi, "_O_");
-}
-
 function imageList(ad: XmlRecord) {
-  const largeImages = asRecord(ad.IMAGES_LARGE)?.IMAGE_URL_LARGE;
-  const regularImages = asRecord(ad.IMAGES)?.IMAGE_URL;
-  const bestImages = new Map<string, string>();
+  // Coleta recursiva: aceita `IMAGES/IMAGE_URL`, `IMAGES_LARGE/IMAGE_URL_LARGE`
+  // e qualquer outra variação de aninhamento que o feed venha a usar.
+  const largeImages = collectImageUrls(ad.IMAGES_LARGE);
+  const regularImages = collectImageUrls(ad.IMAGES);
 
-  [...asArray(largeImages), ...asArray(regularImages)]
-    .map(text)
-    .filter(Boolean)
-    .forEach((image) => {
-      const key = canonicalImageKey(image);
-      const currentImage = bestImages.get(key);
+  const merged = mergeImageLists(largeImages, regularImages);
 
-      if (!currentImage || imageQualityRank(image) < imageQualityRank(currentImage)) {
-        bestImages.set(key, image);
-      }
-    });
+  if (merged.length) {
+    return merged;
+  }
 
-  return Array.from(bestImages.values());
+  // Último recurso: procura URLs de imagem em qualquer campo do anúncio.
+  return mergeImageLists(
+    collectImageUrls(
+      Object.fromEntries(
+        Object.entries(ad).filter(([key]) => /image|imagem|foto|photo/i.test(key))
+      )
+    )
+  );
 }
 
 function normalizedTitle(ad: XmlRecord) {
