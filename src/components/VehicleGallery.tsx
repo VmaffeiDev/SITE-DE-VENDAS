@@ -1,8 +1,9 @@
 "use client";
 
 import { ChevronLeft, ChevronRight, ImageIcon } from "lucide-react";
-import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
+
+import { VehicleImage } from "@/components/VehicleImage";
 
 type VehicleGalleryProps = {
   images: string[];
@@ -42,7 +43,7 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
       <div className="relative overflow-hidden rounded-lg border border-line bg-white shadow-sm">
         <div className="relative aspect-[4/3] bg-white">
           {activeImage ? (
-            <Image
+            <VehicleImage
               key={activeImage}
               src={activeImage}
               alt={`${title} foto ${activeIndex + 1}`}
@@ -106,11 +107,10 @@ export function VehicleGallery({ images, title }: VehicleGalleryProps) {
                     : "border-line hover:border-graphite"
                 }`}
               >
-                <Image
+                <VehicleImage
                   src={image}
                   alt={`${title} miniatura ${index + 1}`}
                   fill
-                  unoptimized
                   sizes="112px"
                   className="object-cover"
                 />

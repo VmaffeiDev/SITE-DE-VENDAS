@@ -1,7 +1,7 @@
 import { ArrowRight, CalendarDays, Gauge, Sparkles } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
+import { VehicleImage } from "@/components/VehicleImage";
 import { formatCurrency, formatMileage, formatYear } from "@/lib/format";
 import type { Vehicle } from "@/types/vehicle";
 
@@ -17,13 +17,18 @@ export function VehicleCard({ vehicle }: VehicleCardProps) {
       <Link href={`/veiculo/${vehicle.id}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-mist">
           {image ? (
-            <Image
+            <VehicleImage
               src={image}
               alt={vehicle.title}
               fill
               quality={92}
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               className="object-cover transition duration-500 group-hover:scale-[1.02]"
+              fallback={
+                <div className="flex h-full items-center justify-center text-graphite">
+                  <Sparkles size={34} />
+                </div>
+              }
             />
           ) : (
             <div className="flex h-full items-center justify-center text-graphite">

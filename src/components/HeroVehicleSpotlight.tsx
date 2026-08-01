@@ -9,10 +9,10 @@ import {
   Gauge,
   Sparkles
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import { VehicleImage } from "@/components/VehicleImage";
 import { formatCurrency, formatMileage, formatYear } from "@/lib/format";
 import type { Vehicle } from "@/types/vehicle";
 
@@ -62,7 +62,7 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
       <div className="lg:grid lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)] lg:items-stretch">
         <div className="relative aspect-[4/3] overflow-hidden bg-white">
           {image ? (
-            <Image
+            <VehicleImage
               key={image}
               src={image}
               alt={activeVehicle.title}
@@ -71,6 +71,11 @@ export function HeroVehicleSpotlight({ vehicles }: HeroVehicleSpotlightProps) {
               unoptimized
               sizes="(min-width: 1024px) 58vw, 100vw"
               className="object-contain"
+              fallback={
+                <div className="flex h-full items-center justify-center bg-mist text-ink">
+                  <Sparkles size={44} />
+                </div>
+              }
             />
           ) : (
             <div className="flex h-full items-center justify-center bg-mist text-ink">
